@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create DL Project"
+  short_description: "Scaffold uv deep-learning experiments"
+  default_prompt: "Use $create-dl-project to scaffold a new deep-learning experiment project with uv, a selected tracking backend, and a chosen Torch version."
