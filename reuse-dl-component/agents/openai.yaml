@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reuse DL Component"
+  short_description: "Copy shared dl-core datasets and metric managers"
+  default_prompt: "Use $reuse-dl-component to copy a same-named dataset or metric_manager from one dl-core experiment repo into another."
