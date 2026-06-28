@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reproduce DL-Core Results"
+  short_description: "Validate paper baselines through dl-core"
+  default_prompt: "Use $reproduce-dl-core-results to reproduce this paper baseline through deep-learning-core and diagnose any metric gap."
