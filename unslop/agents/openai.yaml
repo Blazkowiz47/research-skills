@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unslop"
+  short_description: "Remove AI tells without weakening research"
+  default_prompt: "Use $unslop to revise this text while preserving its technical meaning, evidence, citations, and uncertainty."

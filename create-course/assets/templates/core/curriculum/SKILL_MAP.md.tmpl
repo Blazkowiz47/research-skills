@@ -1,0 +1,32 @@
+# Skill Map — {{TITLE}}
+
+This is a starter dependency graph. Tailor names and evidence after the baseline; preserve IDs when possible so old evidence links remain valid.
+
+## Evidence ladder
+
+`Not started → Learning → Reproduced → Explained → Modified → Debugged independently → Capstone ready`
+
+A status advances only when its required evidence exists. Higher status implies evidence for the earlier stages, not merely time spent.
+
+## Starter dependency graph
+
+| ID | Demonstrable capability | Depends on | Minimum evidence to advance |
+|---|---|---|---|
+| S01 | Use the essential vocabulary precisely | — | Define and distinguish terms from memory, then correct against a source |
+| S02 | Explain the central model or process | S01 | Produce an unaided map and a source-checked explanation |
+| S03 | Reproduce a representative canonical task | S01, S02 | Preserve conditions, attempt, result, and explanation |
+| S04 | Use the field's core method or tool safely | S01 | Complete a bounded task and explain the choices |
+| S05 | Diagnose a representative error or weakness | S02, S03 | Form a hypothesis, test it, and record the result |
+| S06 | Adapt a known method under one changed constraint | S03, S04 | Predict, vary one condition, compare, and explain |
+| S07 | Complete an unfamiliar task independently | S05, S06 | Plan and execute with minimal prompting; meet acceptance criteria |
+| S08 | Integrate and defend a capstone | S07 | Final artifact or assessment, evaluation evidence, and defense |
+
+## Dependency rules
+
+- Every skill must describe observable performance, not a reading assignment.
+- Add a prerequisite only when failing it would block or distort the downstream skill.
+- Split skills whose evidence cannot be demonstrated in one coherent task.
+- Record optional enrichments separately from gate-critical skills.
+- Revisit the graph after each milestone review.
+
+The machine-readable state is in [skill-tracker.csv](skill-tracker.csv).

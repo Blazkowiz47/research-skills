@@ -27,9 +27,21 @@ Useful install variants:
 ./install.sh --method copy --force
 ./install.sh --skill create-dl-project
 ./install.sh --skill reuse-dl-component
+./install.sh --skill create-course --target codex
+./install.sh --skill unslop --target both
 ```
 
 ## Skills
+
+### `create-course`
+
+Create a new personalized, evidence-driven learning project in a specified directory. It turns a topic or capability goal into a prerequisite-aware roadmap, curriculum, diagnostic, trackers, practice or lab system, reviews, and an executable first week and first day. Generated courses use a compact, Obsidian-friendly five-folder structure.
+
+Example prompt:
+
+```text
+Use $create-course to build a personalized course on embedded Rust in /absolute/path/to/embedded-rust, with 6 hours per week.
+```
 
 ### `create-dl-project`
 
@@ -57,3 +69,13 @@ Use $reuse-dl-component to copy the ArcfaceDataset dataset from /home/ubuntu/1Pr
 ```
 
 For now, this skill intentionally supports same-name reuse only. Renaming requires manually checking decorators, class names, imports, and config references.
+
+### `unslop`
+
+Remove common AI-writing patterns while preserving meaning and authorial voice. The research-aware rules protect citations, numerical results, calibrated uncertainty, technical terminology, scope boundaries, and reproducibility details.
+
+Example prompt:
+
+```text
+Use $unslop to revise this discussion section without strengthening its claims or changing its citations and statistical results.
+```

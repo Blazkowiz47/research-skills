@@ -1,0 +1,33 @@
+# Safety, Authorization, and Recovery — {{TITLE}}
+
+## Default boundary
+
+- Use owned or explicitly authorized systems and data.
+- Prefer simulators, containers, fixtures, mock services, synthetic data, and disposable targets.
+- Start with read-only observation.
+- Prefer temporary and reversible changes over persistent ones.
+- Never use a production system or daily-use device as the first target.
+
+## Before a persistent or risky change
+
+- [ ] Exact target and scope are recorded.
+- [ ] Current state and version are captured.
+- [ ] Important data is backed up and restoration is understood.
+- [ ] Recovery artifact or clean baseline matches the target.
+- [ ] Recovery procedure has been tested at the relevant level.
+- [ ] Stop conditions are explicit.
+- [ ] Power, storage, connectivity, and supervision needs are satisfied.
+- [ ] Authorization and downstream impact are confirmed.
+
+## Recovery record
+
+| Field | Value | Evidence |
+|---|---|---|
+| Target |  |  |
+| Baseline state |  |  |
+| Backup |  |  |
+| Recovery method |  |  |
+| Recovery test result | Not tested |  |
+| Residual risk |  |  |
+
+An untested recovery plan is not recovery evidence.

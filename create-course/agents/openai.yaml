@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Course"
+  short_description: "Build an evidence-based self-study system"
+  default_prompt: "Use $create-course to build a personalized course on a topic in an absolute target directory."

@@ -1,0 +1,20 @@
+# Practice and Lab Ladder — {{TITLE}}
+
+| ID | Level | Purpose | Gate evidence |
+|---|---|---|---|
+| L00 | Evidence pipeline | Prove raw output, interpretation, cleanup, and links can be recorded | One harmless observation captured and explained |
+| L01 | Read-only inventory | Observe the authorized environment and pin versions | Reproducible inventory with no mutation |
+| L02 | Controlled reproduction | Run a canonical example in an isolated environment | Baseline result plus explanation |
+| L03 | Instrumentation | Observe the relevant state or data path | Trace or measurement tied to a hypothesis |
+| L04 | Deliberate modification | Change one variable and compare with baseline | Predicted and observed difference plus rollback |
+| L05 | Independent integration | Build or debug an unfamiliar bounded system | Acceptance evidence and defended design decisions |
+
+## Safety gates
+
+- **G0 — Evidence ready:** storage, redaction, and cleanup conventions tested.
+- **G1 — Environment reproducible:** versions and setup can be reconstructed.
+- **G2 — Recovery proven:** rollback tested before persistent or risky changes.
+- **G3 — Boundary understood:** data/control path and authorization are explicit.
+- **G4 — Independent:** learner can execute, diagnose, and explain without a copied recipe.
+
+The numeric order does not override safety gates or prerequisites.
