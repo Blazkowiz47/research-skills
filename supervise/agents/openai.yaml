@@ -1,0 +1,7 @@
+interface:
+  display_name: "Supervise"
+  short_description: "Check changes against an accepted plan"
+  default_prompt: "Use $supervise to check my current changes against the accepted plan without editing the implementation."
+
+policy:
+  allow_implicit_invocation: false

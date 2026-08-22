@@ -29,6 +29,7 @@ Useful install variants:
 ./install.sh --skill reuse-dl-component
 ./install.sh --skill create-course --target codex
 ./install.sh --skill rubberduck --target both
+./install.sh --skill supervise --target both
 ./install.sh --skill unslop --target both
 ```
 
@@ -79,6 +80,22 @@ Example prompt:
 
 ```text
 Use $rubberduck to help me explore whether this metric gap points to a dataset issue or a training issue.
+```
+
+### `supervise`
+
+Check user-written changes against an accepted implementation plan without taking over the coding. The skill keeps durable project-local supervision state, reviews staged, unstaged, untracked, or committed changes, runs proportionate validation, and reports whether the work is aligned, incomplete, off-plan, or needs an approved plan amendment.
+
+Example prompt:
+
+```text
+/supervise the current changes
+```
+
+The explicit form also works:
+
+```text
+Use $supervise to check my current changes against the accepted plan.
 ```
 
 ### `unslop`
