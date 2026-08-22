@@ -84,7 +84,7 @@ Use $rubberduck to help me explore whether this metric gap points to a dataset i
 
 ### `supervise`
 
-Check user-written changes against an accepted implementation plan without taking over the coding. The skill keeps durable project-local supervision state, reviews staged, unstaged, untracked, or committed changes, runs proportionate validation, and reports whether the work is aligned, incomplete, off-plan, or needs an approved plan amendment.
+Check user-written changes against an accepted implementation plan without taking over the coding. In projects with initialized memory, the skill keeps its durable state in `memory/supervise.md`. It reviews staged, unstaged, untracked, or committed changes, runs proportionate validation, and reports whether the work is aligned, incomplete, off-plan, or needs an approved plan amendment.
 
 Example prompt:
 

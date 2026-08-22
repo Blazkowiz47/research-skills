@@ -18,7 +18,10 @@ You may:
 - read repository instructions, plans, source files, tests, configs, diffs,
   commits, logs, and local artifacts;
 - run safe, targeted validation needed to assess the current plan step;
-- create or update the supervision record at `.codex/supervise.md`.
+- create or update the supervision record at `memory/supervise.md` when project
+  memory is initialized;
+- move or remove a legacy `.codex/supervise.md` only as described under
+  "Preserve the plan."
 
 Do not:
 
@@ -30,15 +33,35 @@ Do not:
 - broaden the review into unrelated cleanup or style work;
 - start a costly or externally mutating operation without explicit approval.
 
-The supervision record is the only file this skill may modify. If the user asks
-you to implement a fix, explain that implementation falls outside supervision
-and wait for a separate implementation request.
+The supervision record and its one-time legacy migration are the only file
+changes this skill may make. Do not initialize or repair the project's memory
+system. If the user asks you to implement a fix, explain that implementation
+falls outside supervision and wait for a separate implementation request.
 
 ## Preserve the plan
 
-Use `.codex/supervise.md` as durable project-local state so the review does not
-depend on conversation history. Exclude this file from every implementation
-diff and do not add it to `.gitignore` automatically.
+Use `memory/supervise.md` as durable project-local state so the review does not
+depend on conversation history. Project memory is initialized when
+`memory/index.md` exists. If it is missing, do not create a partial `memory/`
+tree or fall back to `.codex/`. Stop before reviewing, return `cannot verify`,
+and ask the user to initialize project memory.
+
+Exclude `memory/supervise.md` and the legacy `.codex/supervise.md` from every
+implementation diff. Do not add either path to `.gitignore` automatically.
+The supervision record may be tracked with the rest of project memory, but do
+not stage or commit it.
+
+When initialized project memory contains a legacy `.codex/supervise.md`:
+
+- if `memory/supervise.md` does not exist, move the legacy record there without
+  changing its contents;
+- if both files are byte-for-byte identical, use the memory copy and remove the
+  legacy copy;
+- if both files differ, modify neither and ask the user which record is
+  authoritative.
+
+Do not leave a symlink or compatibility copy under `.codex/` after a successful
+migration.
 
 When the user starts supervision, including the first invocation of
 "supervise the current changes":
@@ -48,7 +71,7 @@ When the user starts supervision, including the first invocation of
    plan, or the plan explicitly accepted in the current conversation.
 3. If no accepted plan can be reconstructed without guessing, ask the user for
    it. Do not invent missing goals or acceptance criteria.
-4. Record the exact plan in `.codex/supervise.md` with stable step identifiers
+4. Record the exact plan in `memory/supervise.md` with stable step identifiers
    such as `P1`, `P2`, and `P3`.
 5. Record the repository path, branch, baseline revision, constraints,
    acceptance criteria, plan status, approved amendments, and review log.
@@ -99,14 +122,17 @@ None.
 No reviews yet.
 ```
 
-This record is task-specific supervision state, not general memory. Do not add
-unrelated project knowledge, preferences, or research notes to it.
+Although the record lives under `memory/`, it contains only task-specific
+supervision state. Do not add unrelated project knowledge, preferences,
+research notes, daily activity, or general status updates. Leave those to the
+project's normal memory workflow.
 
 ## Inspect current changes
 
-At the start of every invocation, reload `.codex/supervise.md` when it exists.
-If it does not exist, initialize it from the accepted plan before reviewing the
-changes. Do not rely on a summary from an earlier turn.
+At the start of every invocation, confirm project memory is initialized, apply
+the legacy migration rules when needed, and reload `memory/supervise.md` when it
+exists. If it does not exist, initialize it from the accepted plan before
+reviewing the changes. Do not rely on a summary from an earlier turn.
 
 In a Git repository, inspect enough state to cover work made since the last
 accepted checkpoint:
@@ -208,7 +234,7 @@ Next: <one concrete action for the user>
 For a larger review, group evidence and gaps by plan step. Cite exact files and
 lines when useful. State what you did not verify.
 
-After reporting, update only `.codex/supervise.md`:
+After reporting, update only `memory/supervise.md`:
 
 - advance step status only as far as the evidence supports;
 - record the reviewed revision and worktree scope;
