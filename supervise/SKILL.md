@@ -1,6 +1,6 @@
 ---
 name: supervise
-description: Supervise user-written changes against an accepted implementation plan. Use when the user explicitly invokes supervise to check current staged, unstaged, untracked, or committed changes, verify plan alignment, update supervision progress, and name the next user action without editing code.
+description: Supervise user-written changes against an accepted implementation plan. Use when the user explicitly invokes supervise to select an active plan when several exist, check current staged, unstaged, untracked, or committed changes, update that plan's progress, and name the next user action without editing code.
 ---
 
 # Supervise
@@ -18,10 +18,10 @@ You may:
 - read repository instructions, plans, source files, tests, configs, diffs,
   commits, logs, and local artifacts;
 - run safe, targeted validation needed to assess the current plan step;
-- create or update the supervision record at `memory/supervise.md` when project
-  memory is initialized;
-- move or remove a legacy `.codex/supervise.md` only as described under
-  "Preserve the plan."
+- create or update the selected plan record under `memory/supervise/` when
+  project memory is initialized;
+- move or remove legacy singleton records only as described under "Preserve
+  the plans."
 
 Do not:
 
@@ -33,35 +33,76 @@ Do not:
 - broaden the review into unrelated cleanup or style work;
 - start a costly or externally mutating operation without explicit approval.
 
-The supervision record and its one-time legacy migration are the only file
-changes this skill may make. Do not initialize or repair the project's memory
-system. If the user asks you to implement a fix, explain that implementation
-falls outside supervision and wait for a separate implementation request.
+The selected plan record and one-time legacy migration are the only file
+changes this skill may make. Do not update another plan's record, initialize or
+repair the project's memory system, or create a shared supervision index. If
+the user asks you to implement a fix, explain that implementation falls outside
+supervision and wait for a separate implementation request.
 
-## Preserve the plan
+## Preserve the plans
 
-Use `memory/supervise.md` as durable project-local state so the review does not
-depend on conversation history. Project memory is initialized when
-`memory/index.md` exists. If it is missing, do not create a partial `memory/`
-tree or fall back to `.codex/`. Stop before reviewing, return `cannot verify`,
-and ask the user to initialize project memory.
+Use one durable record per accepted plan:
 
-Exclude `memory/supervise.md` and the legacy `.codex/supervise.md` from every
-implementation diff. Do not add either path to `.gitignore` automatically.
-The supervision record may be tracked with the rest of project memory, but do
-not stage or commit it.
+```text
+memory/supervise/<plan-id>.md
+```
 
-When initialized project memory contains a legacy `.codex/supervise.md`:
+This lets separate chats supervise different plans in the same project without
+overwriting each other's state. It also lets one chat switch between named
+plans. Do not rely on chat history as the only copy of a plan.
 
-- if `memory/supervise.md` does not exist, move the legacy record there without
-  changing its contents;
-- if both files are byte-for-byte identical, use the memory copy and remove the
-  legacy copy;
-- if both files differ, modify neither and ask the user which record is
-  authoritative.
+Project memory is initialized when `memory/index.md` exists. If it is missing,
+do not create a partial `memory/` tree or fall back to `.codex/`. Stop before
+reviewing, return `cannot verify`, and ask the user to initialize project
+memory.
 
-Do not leave a symlink or compatibility copy under `.codex/` after a successful
-migration.
+Exclude `memory/supervise/`, legacy `memory/supervise.md`, and legacy
+`.codex/supervise.md` from every implementation diff. Do not add these paths to
+`.gitignore` automatically. Plan records may be tracked with the rest of
+project memory, but do not stage or commit them.
+
+Treat `memory/supervise.md` and `.codex/supervise.md` as legacy singleton
+records. When either exists in a project with initialized memory:
+
+- derive a short lowercase hyphenated plan ID from its stated title or goal;
+- move it to `memory/supervise/<plan-id>.md`, preserving the goal, constraints,
+  steps, acceptance criteria, amendments, and review log exactly;
+- add only missing identity metadata needed by the current record format;
+- if both legacy files are identical, create one plan record and remove both
+  legacy copies;
+- if they differ and each is a complete, clearly distinct plan, migrate them to
+  separate plan records;
+- if their relationship is unclear or a generated ID collides with a different
+  plan, modify neither and ask the user how to identify them.
+
+Do not leave a symlink or compatibility copy at either legacy path after a
+successful migration.
+
+## Select one plan
+
+Review one plan per invocation. At the start, list the records under
+`memory/supervise/` and resolve the selected plan in this order:
+
+1. Use the plan ID or unambiguous plan name stated by the user.
+2. Use a plan already selected in the current conversation unless the user
+   switches plans.
+3. If the current conversation contains one accepted plan, match it to an
+   existing record by its goal, steps, and acceptance criteria. If none match,
+   create a new record instead of selecting an unrelated active plan. If more
+   than one matches, ask which record to use.
+4. Use repository, worktree, and branch metadata only when they identify one
+   active record.
+5. If exactly one active record remains, use it.
+
+If several records still match, ask which plan to supervise before inspecting
+or updating progress. Never choose by modification time. A prompt such as
+`/supervise dataset-cache current changes` selects `dataset-cache`; plain
+`/supervise current changes` works only when the selection is unambiguous.
+
+When creating a plan record, use a user-provided ID when available. Otherwise
+derive a short lowercase hyphenated ID from the plan goal and tell the user
+which ID you used. Never overwrite a different record to reuse an ID. Record
+unknown scope as `unknown` rather than guessing.
 
 When the user starts supervision, including the first invocation of
 "supervise the current changes":
@@ -71,14 +112,15 @@ When the user starts supervision, including the first invocation of
    plan, or the plan explicitly accepted in the current conversation.
 3. If no accepted plan can be reconstructed without guessing, ask the user for
    it. Do not invent missing goals or acceptance criteria.
-4. Record the exact plan in `memory/supervise.md` with stable step identifiers
-   such as `P1`, `P2`, and `P3`.
-5. Record the repository path, branch, baseline revision, constraints,
-   acceptance criteria, plan status, approved amendments, and review log.
+4. Select or create `memory/supervise/<plan-id>.md`.
+5. Record the exact plan with stable step identifiers such as `P1`, `P2`, and
+   `P3`.
+6. Record the repository path, worktree, branch, baseline revision, expected
+   scope, constraints, acceptance criteria, plan status, approved amendments,
+   and review log.
 
-If an active supervision record already exists, use it. Do not replace it with
-a different plan unless the user explicitly ends, supersedes, or replaces the
-active plan.
+Do not replace an active record with a different plan. Create another record
+unless the user explicitly ends, supersedes, or amends the existing plan.
 
 Preserve the accepted plan's meaning. You may update step status and append
 review evidence. Never rewrite the goal, constraints, steps, or acceptance
@@ -89,8 +131,10 @@ Use this structure when creating the record:
 ```markdown
 # Supervision record
 
+Plan ID: <plan-id>
 Status: active
 Repository: <absolute path>
+Worktree: <absolute path>
 Branch: <branch>
 Baseline: <revision or explicit non-git baseline>
 Last reviewed checkpoint: none
@@ -102,6 +146,10 @@ Last reviewed checkpoint: none
 ## Constraints
 
 - <accepted constraint>
+
+## Expected scope
+
+- <path, component, commit boundary, or other ownership evidence>
 
 ## Plan
 
@@ -122,7 +170,7 @@ None.
 No reviews yet.
 ```
 
-Although the record lives under `memory/`, it contains only task-specific
+Although the records live under `memory/`, they contain only task-specific
 supervision state. Do not add unrelated project knowledge, preferences,
 research notes, daily activity, or general status updates. Leave those to the
 project's normal memory workflow.
@@ -130,9 +178,13 @@ project's normal memory workflow.
 ## Inspect current changes
 
 At the start of every invocation, confirm project memory is initialized, apply
-the legacy migration rules when needed, and reload `memory/supervise.md` when it
-exists. If it does not exist, initialize it from the accepted plan before
+the legacy migration rules when needed, select one plan, and reload its record.
+If no matching record exists, initialize one from the accepted plan before
 reviewing the changes. Do not rely on a summary from an earlier turn.
+
+Read the identity and expected scope of other active plan records only as needed
+to avoid assigning their changes to the selected plan. Do not update those
+records.
 
 In a Git repository, inspect enough state to cover work made since the last
 accepted checkpoint:
@@ -144,9 +196,12 @@ accepted checkpoint:
 - commits since the recorded baseline or last reviewed commit;
 - relevant surrounding code, tests, configs, and existing behavior.
 
-Do not assume every changed file belongs to the active step. Separate
-pre-existing or unrelated work from the changes under review. Never overwrite
-or revert changes that are outside the plan.
+Do not assume every changed file belongs to the selected plan or active step.
+Separate work owned by other plans, pre-existing work, and unrelated changes
+from the selected plan's changes. When multiple plans share a worktree or touch
+the same files, use commits, checkpoints, and diff content to identify ownership.
+Return `cannot verify` for changes that cannot be attributed without guessing.
+Never overwrite or revert changes that are outside the selected plan.
 
 If the repository is not under Git, inspect the paths the user identifies and
 record what comparison was possible. Return `cannot verify` when there is no
@@ -225,6 +280,7 @@ For a small change, keep the report short:
 
 ```text
 Verdict: <verdict>
+Plan: <plan ID>
 Plan step: <step ID and title>
 Evidence: <specific diff, test, or artifact evidence>
 Gap: <only when relevant>
@@ -234,7 +290,10 @@ Next: <one concrete action for the user>
 For a larger review, group evidence and gaps by plan step. Cite exact files and
 lines when useful. State what you did not verify.
 
-After reporting, update only `memory/supervise.md`:
+Immediately before writing, reload the selected record so another chat's newer
+review is not overwritten. Preserve any entries added since the review began.
+If concurrent updates conflict, stop and report the conflict instead of
+choosing one. After reporting, update only `memory/supervise/<plan-id>.md`:
 
 - advance step status only as far as the evidence supports;
 - record the reviewed revision and worktree scope;
@@ -242,5 +301,5 @@ After reporting, update only `memory/supervise.md`:
 - add plan amendments only after the user approves them.
 
 When all acceptance criteria are satisfied, mark the supervision record
-`complete`. Do not implement remaining work, commit the result, or start a new
-plan.
+`complete` and retain it at the same path. Do not implement remaining work,
+commit the result, or change another plan's status.

@@ -84,12 +84,18 @@ Use $rubberduck to help me explore whether this metric gap points to a dataset i
 
 ### `supervise`
 
-Check user-written changes against an accepted implementation plan without taking over the coding. In projects with initialized memory, the skill keeps its durable state in `memory/supervise.md`. It reviews staged, unstaged, untracked, or committed changes, runs proportionate validation, and reports whether the work is aligned, incomplete, off-plan, or needs an approved plan amendment.
+Check user-written changes against an accepted implementation plan without taking over the coding. In projects with initialized memory, the skill keeps one durable record per plan under `memory/supervise/`. Separate chats can supervise different plans, and one chat can select between several named plans. The skill reviews staged, unstaged, untracked, or committed changes, runs proportionate validation, and reports whether the work is aligned, incomplete, off-plan, or needs an approved plan amendment.
 
 Example prompt:
 
 ```text
 /supervise the current changes
+```
+
+When more than one plan is active, name the plan:
+
+```text
+/supervise dataset-cache current changes
 ```
 
 The explicit form also works:
