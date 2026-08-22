@@ -28,6 +28,7 @@ Useful install variants:
 ./install.sh --skill create-dl-project
 ./install.sh --skill reuse-dl-component
 ./install.sh --skill create-course --target codex
+./install.sh --skill rubberduck --target both
 ./install.sh --skill unslop --target both
 ```
 
@@ -69,6 +70,16 @@ Use $reuse-dl-component to copy the ArcfaceDataset dataset from /home/ubuntu/1Pr
 ```
 
 For now, this skill intentionally supports same-name reuse only. Renaming requires manually checking decorators, class names, imports, and config references.
+
+### `rubberduck`
+
+Think through a half-formed research idea with a conversational partner that can clarify assumptions, challenge claims, search the literature, and use relevant project evidence. In `dl-core` projects, it understands the generated config, component, experiment, artifact, and temporary-script conventions without editing project code.
+
+Example prompt:
+
+```text
+Use $rubberduck to help me explore whether this metric gap points to a dataset issue or a training issue.
+```
 
 ### `unslop`
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Rubberduck"
+  short_description: "Think through research ideas and assumptions"
+  default_prompt: "Use $rubberduck to help me think through this research idea without implementing project changes."
