@@ -6,6 +6,7 @@ set "TARGET=both"
 set "METHOD=symlink"
 set "FORCE=false"
 set "DRY_RUN=false"
+set "RS_AGENT_HOME_OVERRIDE="
 set /a SKILL_COUNT=0
 
 :parse_args
@@ -30,6 +31,14 @@ if /I "%~1"=="--method" (
 if /I "%~1"=="--skill" (
     if "%~2"=="" goto missing_skill
     call :add_skill "%~2"
+    shift
+    shift
+    goto parse_args
+)
+
+if /I "%~1"=="--agent-home" (
+    if "%~2"=="" exit /b 2
+    set "RS_AGENT_HOME_OVERRIDE=%~2"
     shift
     shift
     goto parse_args
@@ -80,6 +89,10 @@ echo --method must be symlink or copy 1>&2
 exit /b 2
 
 :method_valid
+if defined RS_AGENT_HOME_OVERRIDE if /I "%TARGET%"=="both" (
+    echo --agent-home requires --target codex or claude 1>&2
+    exit /b 2
+)
 if defined CODEX_HOME (
     set "CODEX_HOME_EFFECTIVE=%CODEX_HOME%"
 ) else (
@@ -91,6 +104,9 @@ if defined CLAUDE_HOME (
 ) else (
     set "CLAUDE_HOME_EFFECTIVE=%USERPROFILE%\.claude"
 )
+
+if defined RS_AGENT_HOME_OVERRIDE set "CODEX_HOME_EFFECTIVE=%RS_AGENT_HOME_OVERRIDE%"
+if defined RS_AGENT_HOME_OVERRIDE set "CLAUDE_HOME_EFFECTIVE=%RS_AGENT_HOME_OVERRIDE%"
 
 if not "%SKILL_COUNT%"=="0" goto skills_ready
 for /D %%D in ("%REPO_ROOT%*") do if exist "%%~fD\SKILL.md" call :add_skill "%%~nxD"
@@ -141,6 +157,14 @@ set "AGENT_HOME=%~2"
 set "SKILL=%~3"
 set "SRC=%REPO_ROOT%%~3"
 set "DEST=%~2\skills\%~3"
+set "BACKUP="
+
+set "RS_SKILL_NAME=%~3"
+powershell.exe -NoLogo -NoProfile -NonInteractive -Command "if ($env:RS_SKILL_NAME -cmatch '^[a-z0-9][a-z0-9-]*$') { exit 0 } else { exit 1 }" >nul 2>&1
+if errorlevel 1 (
+    echo Invalid skill name: %~3 1>&2
+    exit /b 1
+)
 
 if exist "%SRC%\SKILL.md" goto source_valid
 echo Skill not found: %SRC% 1>&2
@@ -165,7 +189,7 @@ if not exist "%DEST%" goto create_install
 set "RS_INSTALL_DEST=%DEST%"
 set "RS_INSTALL_SRC=%SRC%"
 powershell.exe -NoLogo -NoProfile -NonInteractive -Command "$item = Get-Item -LiteralPath $env:RS_INSTALL_DEST -Force -ErrorAction SilentlyContinue; if ($item -and $item.LinkType -and ([IO.Path]::GetFullPath([string]$item.Target) -eq [IO.Path]::GetFullPath($env:RS_INSTALL_SRC))) { exit 0 } else { exit 1 }" >nul 2>&1
-if not errorlevel 1 (
+if not errorlevel 1 if /I "%METHOD%"=="symlink" (
     echo   already linked
     exit /b 0
 )
@@ -176,9 +200,11 @@ if /I not "%FORCE%"=="true" (
 )
 
 set "TIMESTAMP="
-for /F "usebackq delims=" %%T in (`powershell.exe -NoLogo -NoProfile -NonInteractive -Command "Get-Date -Format yyyyMMddHHmmss"`) do set "TIMESTAMP=%%T"
-if not defined TIMESTAMP set "TIMESTAMP=%RANDOM%%RANDOM%"
-set "BACKUP=%DEST%.backup-%TIMESTAMP%"
+for /F "usebackq delims=" %%T in (`powershell.exe -NoLogo -NoProfile -NonInteractive -Command "[guid]::NewGuid().ToString()"`) do set "TIMESTAMP=%%T"
+if not defined TIMESTAMP exit /b 1
+if not exist "%AGENT_HOME%\skill-backups" mkdir "%AGENT_HOME%\skill-backups"
+if errorlevel 1 exit /b 1
+set "BACKUP=%AGENT_HOME%\skill-backups\%SKILL%-%TIMESTAMP%"
 move "%DEST%" "%BACKUP%" >nul
 if errorlevel 1 (
     echo Could not back up existing destination: %DEST% 1>&2
@@ -193,7 +219,7 @@ mklink /D "%DEST%" "%SRC%" >nul
 if errorlevel 1 (
     echo Could not create the directory symlink. Enable Windows Developer Mode, 1>&2
     echo run Command Prompt as Administrator, or use --method copy. 1>&2
-    exit /b 1
+    goto restore_install
 )
 exit /b 0
 
@@ -201,9 +227,14 @@ exit /b 0
 xcopy "%SRC%" "%DEST%\" /E /I /H /K /Y >nul
 if errorlevel 1 (
     echo Could not copy skill to: %DEST% 1>&2
-    exit /b 1
+    goto restore_install
 )
 exit /b 0
+
+:restore_install
+if exist "%DEST%" rmdir /S /Q "%DEST%"
+if defined BACKUP if exist "%BACKUP%" move "%BACKUP%" "%DEST%" >nul
+exit /b 1
 
 :usage_success
 call :usage

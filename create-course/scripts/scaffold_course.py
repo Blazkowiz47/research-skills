@@ -14,6 +14,7 @@ from pathlib import Path, PurePosixPath
 import re
 import sys
 from typing import Iterable
+from course_layout import starter_files
 
 
 CONCRETE_PROFILES = (
@@ -56,6 +57,8 @@ def selected_template_sets(
     secondary_profiles: tuple[str, ...],
     depth: str,
 ) -> tuple[str, ...]:
+    if depth == "starter":
+        return ("core",)
     selected = [
         "core",
         *profile_template_sets(profile, primary_profile, secondary_profiles),
@@ -77,7 +80,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "Create a new course project from the create-course templates. "
             "The target must be absolute and absent or empty, its parent must already "
             "exist, and overwriting is never allowed. Depth composes progressively: "
-            "starter uses core and selected profile templates; standard also uses "
+            "starter selects the minimal core; standard uses core and profile templates plus "
             "depth-standard; deep also uses depth-deep."
         )
     )
@@ -111,7 +114,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--depth",
         required=True,
         choices=DEPTHS,
-        help="Template depth: starter, standard (adds depth-standard), or deep (adds both depth sets)",
+        help="Template depth: starter (minimal core), standard (core, profile, and depth-standard), or deep (both depth sets)",
     )
     parser.add_argument("--title", help="Human-readable course title (defaults to topic)")
     parser.add_argument(
@@ -389,7 +392,7 @@ def build_spec(
     profile_files = sorted(
         relative
         for group in profile_sets
-        for relative in groups[group]
+        for relative in groups.get(group, [])
     )
     depth_files = sorted(
         relative
@@ -398,7 +401,7 @@ def build_spec(
         for relative in groups[group]
     )
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "generator": "create-course/scaffold_course.py",
         "target_dir": str(target),
         "title": title,
@@ -431,6 +434,12 @@ def build_spec(
         "depth_files": depth_files,
         "csv_schemas": csv_schemas(files),
         "initially_empty_csvs": initially_empty_csvs(files),
+        "modules": [{"path": "curriculum/modules/M00-calibration.md", "skills": [f"S{i:02d}" for i in range(1, 9)]}],
+        "skill_references": {
+            path: re.search(r"course:skill-refs=([^<>\r\n]*?)\s*-->", files[path]).group(1).split(",")
+            for path in ("tracking/ROADMAP.md", "curriculum/DEPENDENCY_MAP.md", "practice/CAPSTONE.md")
+            if path in files
+        },
     }
 
 
@@ -715,6 +724,14 @@ def main(argv: list[str] | None = None) -> int:
             template_sets,
             replacements,
         )
+        if args.depth == "starter":
+            keep = starter_files(week_id)
+            rendered_files = {path: content for path, content in rendered_files.items() if path in keep}
+            sources = {path: source for path, source in sources.items() if path in keep}
+            groups = {group: [path for path in paths if path in keep] for group, paths in groups.items()}
+            rendered_files["README.md"] = rendered_files["README.md"].replace(
+                "[[notes/INDEX\\|Notes index]]", "Create notes when the first attempt needs one"
+            )
         spec = build_spec(
             target=target,
             topic=topic,

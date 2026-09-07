@@ -1,6 +1,6 @@
 ---
 name: create-course
-description: Create a new personalized, evidence-driven self-study project in a user-specified directory. Use when Codex is asked to turn a topic or capability goal into a filesystem-based course with a roadmap, prerequisite skills, modules, diagnostics, tasks, an initial daily and weekly plan, progress trackers, practice or lab workflows, review loops, source records, and measurable completion gates. Also use when a new learning system should borrow structural ideas from an existing study workspace without copying its personal data or completion state. Do not use for merely explaining a topic, drafting one lesson, maintaining an existing course, or building a public course website or LMS.
+description: Create a new personal self-study course in an empty directory, with evidence-based skills, practice, and an executable first week. Excludes single lessons, existing-course maintenance, and public course websites.
 ---
 
 # Create Course
@@ -24,7 +24,7 @@ Infer other fields from the request and local context when safe. Otherwise recor
 - reference project directories;
 - output depth: `starter`, `standard`, or `deep`.
 
-If baseline or capacity is unknown, create a diagnostic and a calibration week. Ask only when the topic/path is missing or the exact destination already contains files. V1 creates new courses only: never merge into or replace a non-empty directory.
+If baseline or capacity is unknown, create a diagnostic and a calibration week. Ask only when the topic/path is missing or the exact destination already contains files. This skill creates new courses only: never merge into or replace a non-empty directory. Use `$maintain-course` when available for existing-course updates.
 
 ## Resource routing
 
@@ -118,11 +118,21 @@ Do not pass primary or secondary profile flags for a concrete profile.
 
 ### 6. Customize every generated artifact
 
+Starter depth generates 17 files needed for the first learning cycle. Keep the
+selected profile's practice and safety requirements in those files; create later
+modules and specialized tracking machinery only when needed. Standard and deep
+retain their broader template sets.
+
+Read [metadata-sync.md](references/metadata-sync.md). Customize the canonical
+tracker, module ownership/order, reference scopes, and active week, then preview
+and run `scripts/sync_course.py` to update derived markers and manifests. The helper
+does not write teaching content or alter learner data.
+
 - Replace all template placeholders using file edits appropriate to the environment.
 - Write topic-specific outcomes, skill dependencies, evidence, phases, module briefs, source strategy, safety boundaries, first diagnostic, first week, and first day.
-- Keep machine-readable relationship markers synchronized with prose: every concrete `curriculum/modules/*.md` needs `course:module-order`, `course:module-skills`, and `course:module-prerequisites`; the roadmap, dependency map, and capstone use `course:skill-refs`. Every referenced ID must exist in the tracker, and module entry prerequisites must include tracker dependencies owned by earlier modules.
+- Use the sync helper to keep machine-readable relationship markers synchronized with prose: every concrete `curriculum/modules/*.md` needs `course:module-order`, `course:module-skills`, and `course:module-prerequisites`; the roadmap, dependency map, and capstone use `course:skill-refs`. Every referenced ID must exist in the tracker, and module entry prerequisites must include tracker dependencies owned by earlier modules.
 - Keep `TODAY.md`'s `course:active-week` marker and wiki link aligned with the selected `tracking/<week-id>.md`, whose `course:week-id` marker must match.
-- When customization adds, removes, or renames artifacts, keep `.course/COURSE_SPEC.json` synchronized: `generated_files` must exactly match course artifacts, scaffold-provenance lists must reflect changes to their own files, and CSV schemas must match. Do not leave stale paths or silently omit new course artifacts.
+- When customization adds, removes, or renames artifacts, preview and apply metadata sync: `generated_files` must exactly match course artifacts, scaffold-provenance lists must reflect changes to their own files, and CSV schemas must match. Do not leave stale paths or silently omit new course artifacts.
 - Pair every reusable template with one correctly instantiated starter artifact when the selected depth calls for it.
 - Keep the visible root to `README.md`, `TODAY.md`, `AGENTS.md`, and `CLAUDE.md`. Use only `curriculum/`, `notes/`, `practice/`, `tracking/`, and `resources/` as top-level content folders; keep machine metadata under hidden `.course/`.
 - Use Obsidian-friendly wiki links for navigation hubs while retaining valid relative Markdown links where appropriate.

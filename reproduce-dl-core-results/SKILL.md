@@ -1,6 +1,6 @@
 ---
 name: reproduce-dl-core-results
-description: Reproduce and audit deep-learning paper baselines specifically in Sushrut deep-learning-core/dl-core experiment repositories. Use when a user asks to validate whether deep-learning-core has a correct training pipeline, reproduce a paper result with dl-run or dl-sweep, comb through an official GitHub repo for reproducibility code, match paper datasets/hyperparameters/evaluation protocols through simple local dl-core components, reuse dataset or metric_manager wrappers, or diagnose a metric gap between dl-core artifacts and a published table.
+description: Reproduce a published result or audit a metric gap in a dl-core experiment project. Match paper/code, data, realized configuration, and evaluation; excludes standalone component copying and generic research discussion.
 ---
 
 # Reproduce DL-Core Results
@@ -38,6 +38,12 @@ Keep subagent prompts narrow and artifact-based. Do not pass conclusions as fact
 ## Workflow
 
 ### 1. Source the Target
+
+Before expensive work, read [reproduction-contract.md](references/reproduction-contract.md)
+and record the exact source version, dataset identity, realized config, evaluation
+protocol, tolerance, seed policy, and compute budget. Reuse an existing manifest
+when it already carries those fields. Establish the comparison rule before looking
+at outcomes, and treat unresolved contract fields as unverified.
 
 Use primary sources before spending GPU time:
 
@@ -104,7 +110,7 @@ Validate each new local component with syntax checks and the project's temporary
 Optimize for auditability over abstraction:
 
 - Keep new local components direct and readable; another researcher should be able to compare them against the paper or official repo quickly.
-- Inline helper logic when it is used fewer than three times and remains readable in place.
+- Extract helpers when they improve correctness, testability, or comparison against the source; inline trivial one-off operations when clearer.
 - Do not add a new function, method, class, registry, or script just to name a two-line operation.
 - Avoid custom orchestration when `dl-run`, `dl-sweep`, local components, metric managers, or existing scripts already express the workflow.
 - Keep dataset wrappers especially lean: path discovery, manifest/protocol parsing, split construction, item loading, label mapping, and transforms.
@@ -140,18 +146,28 @@ Only move to a sweep after one concrete `dl-run` works.
 
 Launch only after a single config validates:
 
-- Respect the user's GPU constraint. For one GPU, set `CUDA_VISIBLE_DEVICES=0` and avoid distributed assumptions.
+- Preserve the allocated GPU IDs or inherited `CUDA_VISIBLE_DEVICES`. A one-GPU budget does not imply GPU 0. Override allocation only when explicitly selected; avoid distributed assumptions.
 - Reuse an existing `tmux` session/window when the user asks. Do not create a new session in that case.
 - Print start time, command, exit status, and finish time inside the `tmux` pane.
 - For sweeps, run preview or dry-run first and preserve sweep state files.
 - Do not delete sweep tracking directories, analysis folders, or existing artifacts to refresh generated YAMLs.
 
-Example:
+Use `scripts/launch_run.py` from this skill's directory for an authorized run.
+It validates the working directory, preserves inherited GPU allocation, records
+command/timestamps/exit status, and captures output to a companion log. It refuses
+to overwrite an existing record. Preview first with `--dry-run`.
 
 ```sh
-tmux send-keys -t <session>:<window> \
-  'cd /path/to/repo && export CUDA_VISIBLE_DEVICES=0; echo "started $(date -Is)"; uv run dl-run --config configs/<paper_config>.yaml; status=$?; echo "finished ${status} $(date -Is)"' C-m
+python3 <skill-dir>/scripts/launch_run.py \
+  --project /absolute/path/to/repo \
+  --record artifacts/reproduction-001.json \
+  --contract reproduction.json \
+  -- uv run dl-run --config configs/paper.yaml
 ```
+
+For an existing tmux session, inspect the requested pane and confirm an idle shell
+before entering the launcher command. Do not send shell text into an active job.
+Record the pane identity and reuse it when requested.
 
 Poll `tmux`, process state, logs, artifact files, and GPU usage while the job is running. Do not interrupt unless the user asks or the run is clearly invalid.
 

@@ -15,6 +15,7 @@ import re
 import sys
 from typing import Iterable
 from urllib.parse import unquote, urlsplit
+from course_layout import starter_files
 
 
 PROFILES = {
@@ -133,6 +134,8 @@ def selected_template_sets(spec: dict[str, object]) -> tuple[str, ...]:
     """
 
     profile = spec.get("profile")
+    if spec.get("schema_version") == "1.1" and spec.get("depth") == "starter":
+        return ("core",)
     selected_profiles: list[str] = []
     if profile == "mixed":
         primary = spec.get("primary_profile")
@@ -168,6 +171,7 @@ class Finding:
 
 @dataclass
 class Reporter:
+    initial_state: bool = True
     errors: list[Finding] = field(default_factory=list)
     warnings: list[Finding] = field(default_factory=list)
 
@@ -206,7 +210,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "objective, outcome, skills, and planning sentinels must be finalized."
         )
     )
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
         "--scaffold",
         action="store_true",
         help=(
@@ -214,6 +219,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "still run, and files are compared with the currently installed template bundle"
         ),
     )
+    mode.add_argument("--in-progress", action="store_true", help="Validate a used course without requiring empty logs or zero learner progress.")
     parser.add_argument("target", help="Absolute course project directory")
     return parser.parse_args(argv)
 
@@ -267,8 +273,8 @@ def load_spec(target: Path, reporter: Reporter) -> dict[str, object] | None:
 
 def validate_spec(spec: dict[str, object], target: Path, reporter: Reporter) -> None:
     spec_path = target / SPEC_RELATIVE
-    if spec.get("schema_version") != "1.0":
-        reporter.error("SPEC_VERSION", spec_path, "schema_version must be '1.0'")
+    if spec.get("schema_version") not in {"1.0", "1.1"}:
+        reporter.error("SPEC_VERSION", spec_path, "schema_version must be '1.0' or '1.1'")
     for key in ("title", "topic"):
         value = spec.get(key)
         if not isinstance(value, str) or not value.strip():
@@ -505,6 +511,8 @@ def template_expected_paths(
             if safe is None:
                 reporter.error("TEMPLATE_PATH", path, "template renders to an unsafe path")
             else:
+                if spec.get("schema_version") == "1.1" and spec.get("depth") == "starter" and safe not in starter_files(str(spec.get("week_id"))):
+                    continue
                 outputs.add(safe)
         groups[group] = outputs
     noncore_groups = [groups[group] for group in selected_sets if group != "core"]
@@ -739,7 +747,7 @@ def validate_placeholders_and_checkboxes(target: Path, reporter: Reporter) -> No
                 f"{relative}:{line}",
                 f"unresolved placeholder {match.group(0)}",
             )
-        if path.suffix.lower() == ".md":
+        if reporter.initial_state and path.suffix.lower() == ".md":
             for line_number, line in unfenced_lines(text):
                 if CHECKED_BOX_RE.match(line):
                     reporter.error(
@@ -965,7 +973,7 @@ def validate_csvs(
 
         stem = path.stem.lower()
         is_log = stem == "log" or stem.endswith("-log") or stem.endswith("_log")
-        if (relative in initially_empty or is_log) and data_rows:
+        if reporter.initial_state and (relative in initially_empty or is_log) and data_rows:
             reporter.error(
                 "INITIAL_LOG_DATA",
                 relative,
@@ -1173,12 +1181,26 @@ def validate_skill_tracker(
                 f"{relative}:{line_number}",
                 f"status {status!r} is not enabled by approved_statuses",
             )
-        elif status != INITIAL_STATUS:
+        elif status != INITIAL_STATUS and reporter.initial_state:
             reporter.error(
                 "INITIAL_SKILL_STATUS",
                 f"{relative}:{line_number}",
                 f"new courses must begin at status {INITIAL_STATUS!r}, not {status!r}",
             )
+        elif status != INITIAL_STATUS:
+            evidence_index = header_index(header, {"evidence_link", "evidence", "evidence_links"})
+            evidence = row[evidence_index].strip() if evidence_index is not None and evidence_index < len(row) else ""
+            if not evidence:
+                reporter.error("SKILL_EVIDENCE", f"{relative}:{line_number}", "progressed skills require an evidence link")
+            else:
+                for entry in evidence.split(";"):
+                    raw = entry.strip()
+                    wiki = WIKI_LINK_RE.fullmatch(raw)
+                    markdown = INLINE_LINK_RE.fullmatch(raw)
+                    if wiki:
+                        validate_wiki_link(wiki.group(1), target / relative, target, line_number, reporter)
+                    else:
+                        validate_one_link(markdown.group(1) if markdown else raw, target / relative, target, line_number, reporter)
 
     if rows and not graph:
         reporter.error(
@@ -2248,7 +2270,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"validation error: target is not a real directory: {target}", file=sys.stderr)
         return 2
 
-    reporter = Reporter()
+    reporter = Reporter(initial_state=not args.in_progress)
     validate_layout_and_symlinks(target, reporter)
     spec = load_spec(target, reporter)
     if spec is not None:
@@ -2270,9 +2292,19 @@ def main(argv: list[str] | None = None) -> int:
         validate_skill_references(target, tracker, reporter)
         validate_active_week(target, spec, reporter)
         validate_capacity(target, spec, reporter)
-        validate_dashboard_zero_state(target, reporter)
+        if reporter.initial_state:
+            validate_dashboard_zero_state(target, reporter)
+        if spec.get("schema_version") == "1.1" or "modules" in spec or "skill_references" in spec:
+            from sync_course import plan_updates
+            try:
+                pending = plan_updates(target)
+                for path in pending:
+                    reporter.error("DERIVED_METADATA_STALE", path.relative_to(target), "canonical mapping and derived metadata disagree; preview sync_course.py")
+            except (ValueError, OSError, KeyError, TypeError, StopIteration) as exc:
+                reporter.error("CANONICAL_METADATA", SPEC_RELATIVE, str(exc))
     validate_placeholders_and_checkboxes(target, reporter)
-    validate_zero_state_success_claims(target, reporter)
+    if reporter.initial_state:
+        validate_zero_state_success_claims(target, reporter)
     validate_markdown_links(target, reporter)
     reporter.emit()
     return 1 if reporter.errors else 0

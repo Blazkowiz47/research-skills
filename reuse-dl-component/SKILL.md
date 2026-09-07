@@ -1,6 +1,6 @@
 ---
 name: reuse-dl-component
-description: Copy same-named local dl-core dataset or metric_manager components from one experiment repository into another while preserving destination scaffold conventions. Use when a user wants to reuse a shared dataset wrapper or metric manager across dl-core experiment projects by running dl-core add in the destination, copying the source module, and validating the copied file.
+description: Copy a same-named dataset or metric_manager between local dl-core experiment projects, preserving exports and recovering from copy failures. Excludes renaming and general project scaffolding.
 ---
 
 # Reuse DL Component
@@ -19,7 +19,7 @@ Before acting, determine:
 - Component name, such as `ArcfaceDataset` or `StandardBiometricManager`
 - Whether overwriting an existing destination component is allowed
 
-Ask for any missing required input. Do not guess source or destination paths.
+Inspect the request and current repository first. Ask only for inputs that remain ambiguous. Default to no overwrite unless the user already authorized replacement.
 
 ## Workflow
 
@@ -28,7 +28,7 @@ Use `scripts/reuse_dl_component.py` whenever possible.
 Example:
 
 ```sh
-python3 scripts/reuse_dl_component.py \
+python3 <skill-dir>/scripts/reuse_dl_component.py \
   --source-project /home/ubuntu/1Projects/old_project \
   --dest-project /home/ubuntu/1Projects/new_project \
   --component-type dataset \
@@ -38,31 +38,35 @@ python3 scripts/reuse_dl_component.py \
 For a metric manager:
 
 ```sh
-python3 scripts/reuse_dl_component.py \
+python3 <skill-dir>/scripts/reuse_dl_component.py \
   --source-project /home/ubuntu/1Projects/old_project \
   --dest-project /home/ubuntu/1Projects/new_project \
   --component-type metric_manager \
   --name BiometricMetrics
 ```
 
-The helper:
+The helper validates the source syntax and checks project-local import paths
+before writing. It runs `uv run --no-sync dl-core add` using the destination's
+existing environment, copies the component, and validates component/export syntax.
+It restores the prior component and package exports if any operation fails.
+`--dry-run` performs the read-only checks and prints the intended actions.
 
-1. Validates both paths look like `dl-core` experiment repositories.
-2. Resolves the normalized module path, such as `src/datasets/arcface_dataset.py`.
-3. Runs `uv run dl-core add <type> <name>` in the destination so package exports stay aligned.
-4. Copies the source module over the generated destination module.
-5. Checks the copied Python file for syntax errors without importing it.
+Review source/destination package versions and external imports as needed. Static
+checks do not prove runtime compatibility or resolve dynamic imports. Run the
+smallest existing project check that verifies the copied component, using an
+isolated synthetic input when practical. Inspect the check first for dataset,
+tracker, or expensive execution effects. Report precisely what was verified.
 
 ## Safety Rules
 
 - Same-name reuse only. If the user wants to rename the component, explain that this requires manually reviewing decorators, class names, imports, and config references.
 - If the destination component already exists, stop unless the user explicitly permits overwrite and the helper is run with `--force`.
 - Do not stage, commit, or push either experiment repository unless the user separately asks from inside that repository.
-- After copying, tell the user to inspect imports and run the generated project checks, usually `uv run dl-inspect-dataset --config configs/base.yaml` or `uv run dl-smoke --config configs/base.yaml`.
+- Complete inexpensive validation within the authorized scope. Ask only for missing data or additional costly/external execution that is actually required.
 
 ## Manual Fallback
 
-If the helper cannot be used:
+If the helper cannot be used, first compile the source and preserve the destination component and package exports. Restore them on any failure. Then run the equivalent operations:
 
 ```sh
 cd /path/to/new_project

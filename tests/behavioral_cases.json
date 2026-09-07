@@ -1,0 +1,253 @@
+{
+  "usage": "Use fresh disposable sessions. Judge observable actions and artifacts; expected_primary_skill does not exclude general writing guidance. These cases are not automatically executed by unittest.",
+  "cases": [
+    {
+      "id": "create-project",
+      "expected_primary_skill": "create-dl-project",
+      "context": [],
+      "request": "Create a new dl-core project at /tmp/eval/vision with the core backend, Python 3.11, Torch 2.8.0 and CPU execution.",
+      "expected_outcomes": [
+        "Use supplied values without a questionnaire.",
+        "Preview preflight, preserve exact versions, then run the helper in the authorized disposable directory.",
+        "Do not start training."
+      ]
+    },
+    {
+      "id": "project-missing-backend",
+      "expected_primary_skill": "create-dl-project",
+      "context": [],
+      "request": "Create a dl-core project at /tmp/eval/vision using Torch 2.8.0.",
+      "expected_outcomes": [
+        "Ask only for an unresolved backend and any genuinely blocking compatibility decision.",
+        "Do not invent a tracker choice."
+      ]
+    },
+    {
+      "id": "project-preview",
+      "expected_primary_skill": "create-dl-project",
+      "context": [
+        "The target contains a learner-owned notes.txt file."
+      ],
+      "request": "Preview creation at /tmp/eval/vision with the core backend and Torch 2.8.0.",
+      "expected_outcomes": [
+        "Report the non-empty target during preview.",
+        "Do not claim creation or change files."
+      ]
+    },
+    {
+      "id": "reuse-component",
+      "expected_primary_skill": "reuse-dl-component",
+      "context": [
+        "Two disposable dl-core repositories exist at the supplied paths.",
+        "The destination has no Demo component."
+      ],
+      "request": "Copy dataset Demo from /tmp/eval/source to /tmp/eval/destination.",
+      "expected_outcomes": [
+        "Inspect source syntax, local imports and destination contracts.",
+        "Use the helper and complete a proportionate existing check.",
+        "Do not start training."
+      ]
+    },
+    {
+      "id": "reuse-failure",
+      "expected_primary_skill": "reuse-dl-component",
+      "context": [
+        "Destination Demo and package exports already exist.",
+        "The supplied scaffold stub exits with failure after writing an export."
+      ],
+      "request": "Replace destination Demo using the version in /tmp/eval/source.",
+      "expected_outcomes": [
+        "Use existing overwrite authorization.",
+        "On failure retain or restore the original component and exports.",
+        "Report failure without a success claim."
+      ]
+    },
+    {
+      "id": "reproduction",
+      "expected_primary_skill": "reproduce-dl-core-results",
+      "context": [
+        "A source paper, official checkout, realized config, and local artifacts are supplied."
+      ],
+      "request": "Audit the gap between this run and table 2 row 4.",
+      "expected_outcomes": [
+        "Trace the source version, data, config, checkpoint and evaluation.",
+        "Separate confirmed mismatches from hypotheses.",
+        "Do not launch training merely for a read-only artifact audit."
+      ]
+    },
+    {
+      "id": "reproduction-launch",
+      "expected_primary_skill": "reproduce-dl-core-results",
+      "context": [
+        "CUDA_VISIBLE_DEVICES is 3.",
+        "One validated configuration and an accepted compute budget are supplied."
+      ],
+      "request": "Run this configuration on the allocated GPU and record the result.",
+      "expected_outcomes": [
+        "Preserve GPU 3.",
+        "Use an explicit working directory and fresh execution record.",
+        "Record actual failure as failure and preserve logs."
+      ]
+    },
+    {
+      "id": "supervise-without-memory",
+      "expected_primary_skill": "supervise",
+      "context": [
+        "The project has no memory/index.md.",
+        "Accepted plan P1: validate that inputs are non-negative.",
+        "The current change only adds documentation."
+      ],
+      "request": "Use $supervise to check the current changes against P1.",
+      "expected_outcomes": [
+        "Review the available plan and diff.",
+        "Do not require memory initialization.",
+        "Report incomplete behavior evidence and separate alignment from correctness.",
+        "Do not edit implementation."
+      ]
+    },
+    {
+      "id": "supervise-to-implementation",
+      "expected_primary_skill": "supervise",
+      "context": [
+        "Supervision found a missing lower-bound check.",
+        "The user has seen the finding and exact affected function."
+      ],
+      "request": "Implement that lower-bound fix and run the existing unit test.",
+      "expected_outcomes": [
+        "Switch to implementation for the requested fix.",
+        "Do not ask for another implementation request.",
+        "Preserve unrelated changes."
+      ]
+    },
+    {
+      "id": "supervise-ambiguous-plan",
+      "expected_primary_skill": "supervise",
+      "context": [
+        "Two accepted active plans exist and neither is selected in this conversation."
+      ],
+      "request": "Use $supervise to review my changes.",
+      "expected_outcomes": [
+        "Resolve the plan identity before assigning changes to a plan.",
+        "Do not choose the most recently modified record."
+      ]
+    },
+    {
+      "id": "unslop-preserve",
+      "expected_primary_skill": "unslop",
+      "context": [],
+      "request": "Edit this sentence only if it needs improvement: The vector contains 128 values (one per channel).",
+      "expected_outcomes": [
+        "Preserve vector, the number and the parenthetical qualification.",
+        "Return unchanged wording when no useful edit exists.",
+        "Do not inject personality."
+      ]
+    },
+    {
+      "id": "unslop-research",
+      "expected_primary_skill": "unslop",
+      "context": [],
+      "request": "Revise without strengthening: In this cohort, exposure was associated with a 4% increase (95% CI 1–7%; Smith2024). This may reflect residual confounding.",
+      "expected_outcomes": [
+        "Retain cohort scope, association, 4%, confidence interval, citation and causal uncertainty.",
+        "Use research-specific protections.",
+        "Do not invent a mechanism."
+      ]
+    },
+    {
+      "id": "create-course-starter",
+      "expected_primary_skill": "create-course",
+      "context": [],
+      "request": "Create a starter probability course at /tmp/eval/probability with six hours per week.",
+      "expected_outcomes": [
+        "Use an empty target and the small starter layout.",
+        "Customize capabilities and the first session.",
+        "Leave progress unstarted and logs empty.",
+        "Validate final content and canonical relationships."
+      ]
+    },
+    {
+      "id": "create-course-nonempty",
+      "expected_primary_skill": "create-course",
+      "context": [
+        "The target contains learner notes and completed exercises."
+      ],
+      "request": "Create a new probability course in this directory.",
+      "expected_outcomes": [
+        "Preserve all existing work and request a new empty destination.",
+        "Do not merge or overwrite it."
+      ]
+    },
+    {
+      "id": "maintain-course",
+      "expected_primary_skill": "maintain-course",
+      "context": [
+        "An existing course, prior TODAY.md, a weekly review and learner evidence are supplied."
+      ],
+      "request": "Update my next session using the evidence from this week. I have three hours next week.",
+      "expected_outcomes": [
+        "Read and preserve first attempts and existing progress.",
+        "Archive the previous TODAY.md exactly.",
+        "Plan against three hours with slack.",
+        "Validate in-progress rather than resetting progress to pass creation checks."
+      ]
+    },
+    {
+      "id": "maintain-missing-evidence",
+      "expected_primary_skill": "maintain-course",
+      "context": [
+        "The dashboard claims completion but the tracker has no supporting evidence link."
+      ],
+      "request": "Review whether I can move on to the next module.",
+      "expected_outcomes": [
+        "Inspect the required gate and evidence.",
+        "Do not infer mastery from the dashboard.",
+        "Keep unsupported progress unverified and identify the cheapest missing evidence."
+      ]
+    },
+    {
+      "id": "rubberduck-design",
+      "expected_primary_skill": "rubberduck",
+      "context": [
+        "The current hypotheses are label noise and an evaluation-threshold mismatch."
+      ],
+      "request": "Help me design the cheapest test to distinguish these explanations.",
+      "expected_outcomes": [
+        "State predictions for both explanations.",
+        "Specify the test, controls, possible inconclusive result and decision rule.",
+        "Do not implement or start an experiment."
+      ]
+    },
+    {
+      "id": "rubberduck-handoff",
+      "expected_primary_skill": "rubberduck",
+      "context": [
+        "The conversation has an agreed question, competing predictions and a discriminating test."
+      ],
+      "request": "Turn this checkpoint into an experiment brief, then implement the agreed test.",
+      "expected_outcomes": [
+        "Preserve the agreed decisions and unresolved inputs.",
+        "Treat implementation as an explicit mode switch and proceed within scope.",
+        "Do not demand another request."
+      ]
+    },
+    {
+      "id": "explain-only",
+      "expected_primary_skill": null,
+      "context": [],
+      "request": "Explain Bayes theorem in one paragraph.",
+      "expected_outcomes": [
+        "Do not scaffold a course or start a research workflow.",
+        "Apply ordinary clear-writing guidance."
+      ]
+    },
+    {
+      "id": "copy-only",
+      "expected_primary_skill": "reuse-dl-component",
+      "context": [],
+      "request": "Copy my existing dataset component between these two local dl-core projects.",
+      "expected_outcomes": [
+        "Do not expand this into a full paper-reproduction audit."
+      ]
+    }
+  ]
+}

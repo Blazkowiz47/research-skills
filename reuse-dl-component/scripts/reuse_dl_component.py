@@ -4,11 +4,14 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime
+import ast
+import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -55,7 +58,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--force",
         action="store_true",
-        help="Overwrite an existing destination component after backing it up.",
+        help="Replace an existing destination component, restoring prior files on failure.",
     )
     parser.add_argument(
         "--dry-run",
@@ -123,7 +126,9 @@ def to_module_name(value: str) -> str:
 
 def find_project_root(path: Path) -> Path:
     start = path.expanduser().resolve()
-    candidates = [start, *start.parents] if start.exists() else [start, *start.parents]
+    if not start.exists():
+        raise SystemExit(f"Project path does not exist: {path}")
+    candidates = [start, *start.parents]
     for candidate in candidates:
         if (candidate / "pyproject.toml").exists() and (candidate / "src").is_dir():
             return candidate
@@ -138,7 +143,7 @@ def component_path(project_root: Path, directory: str, module_name: str) -> Path
 
 
 def render_command(command: list[str]) -> str:
-    return " ".join(command)
+    return shlex.join(command)
 
 
 def run(command: list[str], cwd: Path, dry_run: bool) -> None:
@@ -148,20 +153,123 @@ def run(command: list[str], cwd: Path, dry_run: bool) -> None:
     subprocess.run(command, cwd=str(cwd), check=True)
 
 
-def backup_existing(path: Path, dry_run: bool) -> None:
-    if not path.exists():
-        return
-    backup = path.with_name(
-        f"{path.name}.backup-{datetime.now().strftime('%Y%m%d%H%M%S')}"
-    )
-    print(f"+ mv {path} {backup}")
-    if not dry_run:
-        shutil.move(str(path), str(backup))
-
-
 def validate_python_syntax(path: Path) -> None:
     source = path.read_text(encoding="utf-8")
     compile(source, str(path), "exec")
+
+
+def inspect_imports(source_file: Path, source_root: Path, dest_root: Path) -> list[str]:
+    """Find missing project-local imports without executing user code."""
+    missing: set[str] = set()
+    package = source_file.relative_to(source_root).with_suffix("").parts[:-1]
+    for node in ast.walk(ast.parse(source_file.read_text(encoding="utf-8"))):
+        modules: list[str] = []
+        if isinstance(node, ast.Import):
+            modules = [alias.name for alias in node.names]
+        elif isinstance(node, ast.ImportFrom):
+            prefix = list(package[:len(package) - node.level + 1]) if node.level else []
+            base = [*prefix, *(node.module.split(".") if node.module else [])]
+            modules = [".".join(base), *[".".join([*base, alias.name]) for alias in node.names if alias.name != "*"]]
+        for module in modules:
+            if not module:
+                continue
+            relative = Path(*module.split("."))
+            for base in (Path(), Path("src")):
+                candidates = (base / relative.with_suffix(".py"), base / relative / "__init__.py")
+                for candidate in candidates:
+                    if (source_root / candidate).is_file() and not (dest_root / candidate).is_file():
+                        if source_root / candidate != source_file:
+                            missing.add(candidate.as_posix())
+    return sorted(missing)
+
+
+def validate_component_exports(component: Path) -> None:
+    """Catch definitely missing exports without importing the component."""
+    body = ast.parse(component.read_text(encoding="utf-8")).body
+    names: set[str] = set()
+    uncertain = False
+    for node in body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            names.add(node.name)
+            uncertain |= node.name == "__getattr__"
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                if alias.name == "*":
+                    uncertain = True
+                else:
+                    names.add(alias.asname or (alias.name.split(".")[0] if isinstance(node, ast.Import) else alias.name))
+        elif isinstance(node, (ast.Assign, ast.AnnAssign)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            for target in targets:
+                names.update(child.id for child in ast.walk(target) if isinstance(child, ast.Name))
+        elif isinstance(node, (ast.If, ast.Try)):
+            uncertain = True
+    init = component.parent / "__init__.py"
+    if uncertain or not init.is_file():
+        return
+    for node in ast.walk(ast.parse(init.read_text(encoding="utf-8"))):
+        if isinstance(node, ast.ImportFrom) and node.level == 1 and node.module == component.stem:
+            missing = {alias.name for alias in node.names if alias.name != "*"} - names
+            if missing:
+                raise RuntimeError(f"Generated exports are absent from {component.name}: {', '.join(sorted(missing))}")
+
+
+def copy_component(source_file: Path, dest_file: Path, dest_root: Path, command: list[str]) -> None:
+    """Restore the component and package exports if scaffolding or copying fails."""
+    src_root = dest_root / "src"
+    if not dest_file.parent.is_dir():
+        raise SystemExit(f"Expected legacy component directory {dest_file.parent}. Inspect the destination layout before copying.")
+    exports = set(src_root.rglob("__init__.py")) | {src_root / "__init__.py", dest_file.parent / "__init__.py"}
+    tracked = exports | {dest_file}
+    for path in tracked:
+        parents = (parent for parent in path.parents if dest_root in parent.parents)
+        if path.is_symlink() or any(parent.is_symlink() for parent in parents):
+            raise SystemExit(f"Refusing to replace a symlinked component/export: {path}")
+    existing = {p: p.read_bytes() for p in tracked if p.exists()}
+    modes = {p: p.stat().st_mode for p in existing}
+    backup = Path(tempfile.mkdtemp(prefix="reuse-dl-component-"))
+    retain_backup = False
+    staged: Path | None = None
+    try:
+        for path, content in existing.items():
+            saved = backup / path.relative_to(dest_root)
+            saved.parent.mkdir(parents=True, exist_ok=True)
+            saved.write_bytes(content)
+        try:
+            run(command, dest_root, False)
+            if not dest_file.is_file():
+                raise RuntimeError(f"dl-core generated no component at the expected path: {dest_file}")
+            with tempfile.NamedTemporaryFile(dir=dest_file.parent, prefix=".reuse-", suffix=".py", delete=False) as handle:
+                staged = Path(handle.name)
+            shutil.copy2(source_file, staged)
+            validate_python_syntax(staged)
+            os.replace(staged, dest_file)
+            for path in set(src_root.rglob("__init__.py")) | {dest_file}:
+                if path not in existing or path.read_bytes() != existing[path]:
+                    validate_python_syntax(path)
+            validate_component_exports(dest_file)
+        except BaseException:
+            # Try every restoration even if one path has become unwritable.
+            errors = []
+            for path in tracked | set(src_root.rglob("__init__.py")):
+                try:
+                    if path in existing:
+                        if not path.exists() or path.read_bytes() != existing[path]:
+                            path.write_bytes(existing[path])
+                        path.chmod(modes[path])
+                    elif path.exists():
+                        path.unlink()
+                except OSError as exc:
+                    errors.append(str(exc))
+            if errors:
+                retain_backup = True
+                print(f"Some files could not be restored. Original contents retained at {backup}: " + "; ".join(errors), file=sys.stderr)
+            raise
+    finally:
+        if staged is not None and staged.exists():
+            staged.unlink()
+        if not retain_backup:
+            shutil.rmtree(backup)
 
 
 def main() -> int:
@@ -178,6 +286,10 @@ def main() -> int:
     dest_file = component_path(dest_root, component["directory"], module_name)
     if not source_file.exists():
         raise SystemExit(f"Source component file not found: {source_file}")
+    validate_python_syntax(source_file)
+    missing = inspect_imports(source_file, source_root, dest_root)
+    if missing:
+        raise SystemExit("Missing destination project-local dependencies; review/copy these first: " + ", ".join(missing))
 
     print(f"Source project: {source_root}")
     print(f"Destination project: {dest_root}")
@@ -192,21 +304,18 @@ def main() -> int:
             "Re-run with --force only if overwriting is intended."
         )
 
-    if dest_file.exists():
-        backup_existing(dest_file, args.dry_run)
-
-    command = ["uv", "run", "dl-core", "add", component["dl_core_type"], args.name]
+    command = ["uv", "run", "--no-sync", "dl-core", "add", component["dl_core_type"], args.name]
     if args.force:
         command.append("--force")
-    run(command, dest_root, args.dry_run)
-
-    print(f"+ cp {source_file} {dest_file}")
-    if not args.dry_run:
-        shutil.copy2(source_file, dest_file)
-        validate_python_syntax(dest_file)
+    if args.dry_run:
+        run(command, dest_root, True)
+        print(f"Would copy {source_file} to {dest_file} and validate component/exports.")
+        return 0
+    copy_component(source_file, dest_file, dest_root, command)
 
     print("\nReused component successfully.")
-    print("Next: inspect imports and run the destination repo's dl-core smoke checks.")
+    print("Checked source syntax, local import paths, and generated component/export syntax.")
+    print("Runtime imports and dataset/model behavior still need a targeted project check.")
     return 0
 
 

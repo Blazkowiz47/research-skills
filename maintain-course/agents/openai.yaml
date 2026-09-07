@@ -1,0 +1,4 @@
+interface:
+  display_name: "Maintain Course"
+  short_description: "Review evidence and replan an existing course"
+  default_prompt: "Use $maintain-course to review my recorded progress and update the next session in this course."

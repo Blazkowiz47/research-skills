@@ -65,7 +65,10 @@ Infer the mode from the conversation when it is clear:
 - `literature`: Focus on how existing work supports, contradicts, or reframes
   the idea.
 - `design`: Identify observations or tests that would distinguish competing
-  explanations.
+  explanations. For each serious alternative, state its predicted observation,
+  the cheapest discriminating test, and the decision each possible result would
+  support. Include an inconclusive outcome when the test cannot separate them.
+  Separate a measurement prediction from a preference about what should happen.
 
 In `grill` mode, include your recommended answer only for genuine decisions
 where you have a defensible recommendation. Do not recommend answers to
@@ -136,7 +139,7 @@ create temporary code outside `scripts/`.
 A temporary probe must answer a specific question from the reasoning frontier,
 use the existing environment without adding dependencies, and avoid modifying
 datasets, checkpoints, artifacts, trackers, or project state. In a uv project,
-run it with `uv run python`.
+run it with `uv run --no-sync python` after confirming the existing environment. Use a unique temporary filename and remove only the file created by this invocation.
 
 Tell the user what the probe tests and what it observed. Remove the temporary
 script when finished unless the user asks to retain it. Never modify an
@@ -153,7 +156,13 @@ In a dl-core project, also connect the idea to relevant components, configs,
 experimental factors, metrics, artifacts, and the cheapest useful check. This
 is a conceptual mapping, not authorization to edit files or run an experiment.
 
+On request, turn the current checkpoint into a concise experiment brief with the
+question, competing predictions, test, controls, measurement, decision rule,
+relevant project paths, and unresolved inputs. Do not invent settled answers.
+Keep it in chat unless the user asks to save it.
+
 A session does not need to resolve every branch. Stop when the user has enough
-clarity, chooses a next step, or wants to switch to another skill. Do not turn
-that next step into implementation unless the user explicitly requests it
-outside the rubberduck session.
+clarity or chooses a next step. An explicit request to implement or run that next
+step switches out of rubberduck mode and supplies authorization for that scope;
+continue without asking the user to repeat it. A conceptual next-step suggestion
+alone does not authorize implementation.

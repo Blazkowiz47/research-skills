@@ -1,6 +1,6 @@
 ---
 name: create-dl-project
-description: Create new uv-based deep-learning experiment repositories using Sushrut's dl-init workflow. Use when a user wants to scaffold a new project with uv, install one of deep-learning-core, deep-learning-azure, deep-learning-mlflow, or deep-learning-wandb, choose a Torch version, bootstrap uv if needed, and run dl-init with the matching tracking backend flag.
+description: Create or resume a uv-based dl-core experiment project with a chosen backend, Torch version, and Python/device requirements. Use for project scaffolding, not training or paper reproduction.
 ---
 
 # Create DL Project
@@ -22,7 +22,16 @@ Before creating a project, determine:
   - `mlflow`: install `deep-learning-mlflow`; run `uv run dl-init --with-mlflow`
   - `wandb`: install `deep-learning-wandb`; run `uv run dl-init --with-wandb`
 
-Ask the user for any missing required input. Do not guess the project location, project name, or backend. If the user has not specified a Torch version, offer `2.8.0` as the default and let them choose.
+Use the request and local context to resolve inputs already supplied. Ask only
+when location, name, backend, or version remains ambiguous. Offer `2.8.0` as an
+example default when appropriate, not a universal compatibility claim. Preserve
+explicit versions and the user's backend choice.
+
+Check Python, Torch, operating system, and requested device compatibility using
+current official package metadata or documentation before installation. Pass
+`--python` and `--device cpu|cuda|mps` when specified. The dependency resolver checks
+package compatibility; the helper then imports Torch and checks device availability.
+A hardware check does not certify training correctness.
 
 ## Workflow
 
@@ -31,7 +40,7 @@ Use `scripts/create_dl_project.py` for the actual project creation whenever poss
 Example:
 
 ```sh
-python3 scripts/create_dl_project.py \
+python3 <skill-dir>/scripts/create_dl_project.py \
   --parent /home/ubuntu/1Projects \
   --name arcface_reproduce \
   --backend wandb \
@@ -41,12 +50,24 @@ python3 scripts/create_dl_project.py \
 For a no-tracker project:
 
 ```sh
-python3 scripts/create_dl_project.py \
+python3 <skill-dir>/scripts/create_dl_project.py \
   --parent /home/ubuntu/1Projects \
   --name arcface_reproduce \
   --backend core \
   --torch-version 2.8.0
 ```
+
+## Preview and recovery
+
+Start with `--dry-run` to check the path and print commands. Preview does not install
+packages or claim device compatibility. `--name` accepts a single folder name;
+use `--path` for a full path. Use `--create-parent` if the requested parent needs creation.
+
+The helper records completed steps in `.dl-project-setup.json`. If setup fails,
+retry with the same arguments plus `--resume`. It refuses to resume over changed
+project files. Inspect a partially generated `dl-init` scaffold before completing
+it manually; the helper never blindly repeats a partial scaffold over user work.
+The state records setup progress only, not experiment results.
 
 ## Safety Rules
 

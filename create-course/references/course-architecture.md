@@ -82,7 +82,7 @@ Apply these ownership rules:
 
 ## Artifact depth
 
-- `starter`: Produce the contract, operating rules, start page, phase outline, calibration module, skill map/tracker, diagnostic, first week, first day, source index/lock, notes, and minimal evidence/review templates. Use for exploratory goals or sparse inputs.
+- `starter`: Generate 17 files for the first learning cycle: the contract and operating rules, start page, roadmap/backlog/dashboard, calibration module, skill map/tracker, diagnostic, first week, source index/lock, evidence rules, and study log. Create notes, review templates, and profile machinery as needed. Use for exploratory goals or sparse inputs.
 - `standard` (default): Add reusable module, practice-session, and milestone-review machinery to the invariant core plus the selected profile's evidence lane.
 - `deep`: Expand standard output with rubrics, dependency rationale, deeper source evaluation, environment/version controls, milestone audits, and capstone decomposition. Use when the domain is complex, regulated, high-risk, or long-running.
 

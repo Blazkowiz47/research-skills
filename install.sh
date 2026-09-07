@@ -6,7 +6,7 @@ usage() {
 Install research skills for Codex and/or Claude.
 
 Usage:
-  ./install.sh [--target codex|claude|both] [--method symlink|copy] [--skill NAME] [--force] [--dry-run]
+  ./install.sh [--target codex|claude|both] [--method symlink|copy] [--skill NAME] [--agent-home PATH] [--force] [--dry-run]
 
 Defaults:
   --target both
@@ -30,6 +30,7 @@ target="both"
 method="symlink"
 force="false"
 dry_run="false"
+agent_home_override=""
 skills=()
 
 while [ "$#" -gt 0 ]; do
@@ -47,6 +48,11 @@ while [ "$#" -gt 0 ]; do
     --skill)
       [ "$#" -ge 2 ] || { echo "Missing value for --skill" >&2; exit 2; }
       skills+=("$2")
+      shift 2
+      ;;
+    --agent-home)
+      [ "$#" -ge 2 ] || { echo "Missing value for --agent-home" >&2; exit 2; }
+      agent_home_override="$2"
       shift 2
       ;;
     --force)
@@ -74,6 +80,11 @@ case "$target" in
   *) echo "--target must be codex, claude, or both" >&2; exit 2 ;;
 esac
 
+if [ -n "$agent_home_override" ] && [ "$target" = "both" ]; then
+  echo "--agent-home requires --target codex or --target claude" >&2
+  exit 2
+fi
+
 case "$method" in
   symlink|copy) ;;
   *) echo "--method must be symlink or copy" >&2; exit 2 ;;
@@ -99,7 +110,7 @@ install_skill() {
   src="$repo_root/$skill"
   dest="$agent_home/skills/$skill"
 
-  if [ ! -f "$src/SKILL.md" ]; then
+  if [[ ! "$skill" =~ ^[a-z0-9][a-z0-9-]*$ ]] || [ ! -f "$src/SKILL.md" ]; then
     echo "Skill not found: $src" >&2
     exit 1
   fi
@@ -109,13 +120,7 @@ install_skill() {
   echo "  target: $dest"
   echo "  method: $method"
 
-  if [ "$dry_run" = "true" ]; then
-    return
-  fi
-
-  mkdir -p "$agent_home/skills"
-
-  if [ -L "$dest" ]; then
+  if [ "$method" = "symlink" ] && [ -L "$dest" ]; then
     existing="$(readlink "$dest")"
     if [ "$existing" = "$src" ]; then
       echo "  already linked"
@@ -123,30 +128,56 @@ install_skill() {
     fi
   fi
 
+  backup=""
   if [ -e "$dest" ] || [ -L "$dest" ]; then
     if [ "$force" != "true" ]; then
       echo "Destination exists. Re-run with --force to replace: $dest" >&2
       exit 1
     fi
-    backup="$dest.backup-$(date +%Y%m%d%H%M%S)"
+  fi
+
+  if [ "$dry_run" = "true" ]; then
+    return
+  fi
+
+  mkdir -p "$agent_home/skills"
+  staging_dir="$(mktemp -d "$agent_home/.skill-install-XXXXXXXX")"
+  if [ "$method" = "symlink" ]; then
+    ln -s "$src" "$staging_dir/$skill" && prepared=true || prepared=false
+  else
+    cp -R "$src" "$staging_dir/$skill" && prepared=true || prepared=false
+  fi
+  if [ "$prepared" != "true" ]; then
+    rm -rf "$staging_dir"
+    echo "Could not prepare installation: $src" >&2
+    exit 1
+  fi
+  if [ -e "$dest" ] || [ -L "$dest" ]; then
+    mkdir -p "$agent_home/skill-backups"
+    backup_dir="$(mktemp -d "$agent_home/skill-backups/$skill-XXXXXXXX")"
+    backup="$backup_dir/$skill"
     mv "$dest" "$backup"
     echo "  backup: $backup"
   fi
 
-  if [ "$method" = "symlink" ]; then
-    ln -s "$src" "$dest"
-  else
-    cp -R "$src" "$dest"
+  mv "$staging_dir/$skill" "$dest" && installed=true || installed=false
+  rm -rf "$staging_dir"
+  if [ "$installed" != "true" ]; then
+    if [ -n "$backup" ]; then
+      mv "$backup" "$dest"
+    fi
+    echo "Installation failed; previous skill restored: $dest" >&2
+    exit 1
   fi
 }
 
 for skill in "${skills[@]}"; do
   if [ "$target" = "codex" ] || [ "$target" = "both" ]; then
-    install_skill "Codex" "${CODEX_HOME:-$HOME/.codex}" "$skill"
+    install_skill "Codex" "${agent_home_override:-${CODEX_HOME:-$HOME/.codex}}" "$skill"
   fi
 
   if [ "$target" = "claude" ] || [ "$target" = "both" ]; then
-    install_skill "Claude" "${CLAUDE_HOME:-$HOME/.claude}" "$skill"
+    install_skill "Claude" "${agent_home_override:-${CLAUDE_HOME:-$HOME/.claude}}" "$skill"
   fi
 done
 
