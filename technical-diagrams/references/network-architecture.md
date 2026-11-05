@@ -13,6 +13,28 @@ Use for neural-network structure and computation inside a layer or mechanism.
 - Routers: distinct small components. Solid data arrows enter the router;
   dashed control/weight arrows leave it. A tensor sent to a router remains data.
 
+## Operator notation
+
+Use circled `+` for additive merge nodes throughout a figure family, including
+weighted sums and bias/shared-branch additions. Do not alternate `+` and `Σ`
+for the same merge. Use `×` for elementwise multiplication or scalar gating,
+with shapes or labels making the distinction clear; use `@` for matrix
+multiplication in explanatory formulas. Explicit publication notation can
+override these defaults, but keep the chosen convention consistent.
+
+Center glyphs visually inside operator nodes. Check the rendered glyph, not
+just its text anchor. Keep convolution explicitly labeled; do not let a generic
+multiplication symbol ambiguously stand for convolution.
+
+Combine adjacent additive merges when mathematically valid and clearer, including
+bias or shared-output inputs. Preserve gating, nonlinearities, shapes, and where
+bias is applied; do not move an addition across a transformation or add bias twice.
+Retain separate nodes if the intermediate result or execution order matters.
+
+During inspection, trace tensor flow both into and within routers using solid
+arrows, and decisions/gates using dashed arrows. Apply the shared inactive-state
+rules to every nested operator and connection, not only expert containers.
+
 ## Preserve computation
 
 Trace shapes, branch points, residual connections, and operator order. Distinguish
@@ -38,7 +60,7 @@ selection scope, and operation ordering needed to understand the claim.
 - [Accepted translucent MoE preview](../assets/examples/network-architecture.png)
 - [Editable SVG](../assets/examples/network-architecture.svg)
 
-This source example depicts a proposed depthwise MoE with four versions and top-2
-selection. Those are example settings. It originally uses a dashed full-tensor
-input into the router; when adapting it, use the clearer data/control distinction
-above. Preserve the accepted appearance without preserving that ambiguity.
+This example depicts a proposed depthwise MoE with four versions and top-2
+selection. Those are example settings. It retains the accepted translucent
+appearance with the revised circled-add notation, solid tensor input to the
+router, and neutral grey inactive branches.

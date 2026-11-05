@@ -34,6 +34,30 @@ Use stable colors and identifiers across related views. Show repetition through
 a representative unit and a count, rather than drawing every repeated object.
 Keep omitted details explicit when they affect interpretation.
 
+## Consistency across figures
+
+Keep the same operation, object, and state visually consistent across related
+figures and before/after panels: symbols, colors, labels, and connection styles
+should agree. Preserve each diagram type's conventions when comparing different
+types; a dashed sequence return does not become a routing signal.
+
+An inactive section must be neutral grey throughout: weights, activations,
+operator glyphs, labels, outlines, and internal arrows. Do not leave a dark or
+colored operator inside a greyed block. Keep labels legible and identify the
+state in text or a legend. Grey only the inactive branch, not a shared upstream
+path that still feeds active branches. Distinguish inactive in this example from
+removed, unavailable, or unimplemented.
+
+When generating a figure family programmatically, reuse drawing primitives and
+style definitions for operators, arrows, and active/inactive states. Pass state
+through to child elements so individual renderers do not drift. Reuse existing
+helpers where practical; a single figure does not require a rendering framework.
+
+Inspect related exports together. Check every occurrence of an operator and
+every child of an inactive group, including arrowheads and annotations. Compare
+legends with the actual symbols and paths. Keep bundled examples aligned with
+the written conventions when those conventions change.
+
 ## Rendering and delivery
 
 Prefer editable SVG for custom diagrams, with a PNG preview; PDF is useful for a

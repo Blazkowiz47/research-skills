@@ -310,6 +310,22 @@
         "Honor the requested text-only format.",
         "Do not generate diagram artifacts or load diagram references."
       ]
+    },
+    {
+      "id": "diagram-family-consistency",
+      "expected_primary_skill": "technical-diagrams",
+      "context": [
+        "Two related MoE figure sources use different symbols for the same addition; inactive experts retain dark activation and multiplication symbols.",
+        "One figure uses dashed tensor arrows inside its router. A bias is added after a nonlinear operation."
+      ],
+      "request": "Make these comparison diagrams consistent with my preferred style.",
+      "expected_outcomes": [
+        "Use consistent circled-add nodes, multiplication notation, and centered operator glyphs across both figures.",
+        "Grey all inactive children and internal connections while preserving readable labels and active shared paths.",
+        "Use solid tensor arrows into and within routers; reserve dashed arrows for decisions and gates.",
+        "Preserve bias placement across the nonlinearity when simplifying additive nodes.",
+        "Render and inspect both figures together, checking legends, state styling, and all occurrences of each operator."
+      ]
     }
   ]
 }

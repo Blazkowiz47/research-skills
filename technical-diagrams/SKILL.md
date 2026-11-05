@@ -53,8 +53,9 @@ override these defaults.
    project's established diagram/artifact location; use a separate local output
    directory if none exists. Do not change implementation to produce a diagram.
 4. Inspect the rendered result at its intended size. Check arrow endpoints,
-   labels, clipping, overlaps, contrast, and technical correctness. Fix problems
-   before presenting it. If rendering is unavailable, say what remains unchecked.
+   labels, clipping, overlaps, contrast, and technical correctness. Compare related
+   diagrams for consistent notation and state styling, not just each in isolation.
+   Fix problems before presenting it. If rendering is unavailable, say what remains unchecked.
 5. Show the diagram inline where supported and link its editable source. Briefly
    explain its scope or assumptions. Revise the relevant view when feedback arrives.
 
