@@ -146,7 +146,7 @@
       "id": "unslop-research",
       "expected_primary_skill": "unslop",
       "context": [],
-      "request": "Revise without strengthening: In this cohort, exposure was associated with a 4% increase (95% CI 1–7%; Smith2024). This may reflect residual confounding.",
+      "request": "Revise without strengthening: In this cohort, exposure was associated with a 4% increase (95% CI 1\u20137%; Smith2024). This may reflect residual confounding.",
       "expected_outcomes": [
         "Retain cohort scope, association, 4%, confidence interval, citation and causal uncertainty.",
         "Use research-specific protections.",
@@ -247,6 +247,68 @@
       "request": "Copy my existing dataset component between these two local dl-core projects.",
       "expected_outcomes": [
         "Do not expand this into a full paper-reproduction audit."
+      ]
+    },
+    {
+      "id": "diagram-sequence-implicit",
+      "expected_primary_skill": "technical-diagrams",
+      "context": [
+        "A local checkout contains a controller, async service call, and callback handler."
+      ],
+      "request": "Show how these class methods call one another, including when the callback runs.",
+      "expected_outcomes": [
+        "Select the sequence reference and shared style without loading unrelated diagram references.",
+        "Inspect actual call sites and distinguish async send, callback, and return.",
+        "Render and inspect a sequence diagram; retain editable source without running the service."
+      ]
+    },
+    {
+      "id": "diagram-system-flow",
+      "expected_primary_skill": "technical-diagrams",
+      "context": [
+        "One worker performs parsing, chunking, and embedding; it is one deployed process."
+      ],
+      "request": "Explain this document indexing system and the data flowing through it.",
+      "expected_outcomes": [
+        "Produce a combined component/data-flow overview with labeled payloads and boundaries.",
+        "Do not represent internal worker steps as separate deployed services.",
+        "Use Explain mode and expand a component only if the overview needs it."
+      ]
+    },
+    {
+      "id": "diagram-network-paper",
+      "expected_primary_skill": "technical-diagrams",
+      "context": [
+        "The supplied proposal mixes kernels before convolution; routing is not implemented."
+      ],
+      "request": "Draw this network architecture for a paper figure.",
+      "expected_outcomes": [
+        "Use Present mode, the network reference, and shared style.",
+        "Preserve kernel mixing before convolution, label the mechanism as proposed, and distinguish router input data from output weights.",
+        "Deliver editable vector source and an inspected preview readable at the intended size."
+      ]
+    },
+    {
+      "id": "diagram-control-flow",
+      "expected_primary_skill": "technical-diagrams",
+      "context": [
+        "A supplied function retries transient fetch errors up to three total attempts and stops immediately on invalid content."
+      ],
+      "request": "Draw the retry and failure paths in this function.",
+      "expected_outcomes": [
+        "Read the control-flow reference and inspect the actual conditions.",
+        "Show finite attempts, the retry back edge, and terminal validation failure.",
+        "Do not imply every failure retries or confuse three attempts with three retries."
+      ]
+    },
+    {
+      "id": "diagram-text-only",
+      "expected_primary_skill": null,
+      "context": [],
+      "request": "Explain how this system works in two sentences, text only.",
+      "expected_outcomes": [
+        "Honor the requested text-only format.",
+        "Do not generate diagram artifacts or load diagram references."
       ]
     }
   ]

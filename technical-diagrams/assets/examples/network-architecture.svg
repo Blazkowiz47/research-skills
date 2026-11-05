@@ -1,0 +1,270 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1390" viewBox="0 0 1800 1390">
+<rect width="100%" height="100%" fill="#f5f7fb"/>
+<text x="56" y="38" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="40" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">Depthwise MoE · building blocks</text>
+<text x="58" y="96" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="23" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Visual proposal  /  7 × 7 depthwise kernels  /  four expert versions per channel</text>
+<rect x="48" y="155" width="365" height="365" rx="18" fill="#ffffff" fill-opacity="1" stroke="#dce3ec" stroke-width="2"/>
+<text x="72" y="180" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">01   Feature tensor</text>
+<polygon points="171,239 178,232 278,232 271,239" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="271,239 278,232 278,362 271,369" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="171" y="239" width="100" height="130" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="159,251 166,244 266,244 259,251" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="259,251 266,244 266,374 259,381" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="159" y="251" width="100" height="130" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="147,263 154,256 254,256 247,263" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="247,263 254,256 254,386 247,393" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="147" y="263" width="100" height="130" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="135,275 142,268 242,268 235,275" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="235,275 242,268 242,398 235,405" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="135" y="275" width="100" height="130" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<text x="185.0" y="328.0" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="27" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">c₁</text>
+<text x="280" y="245" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="28" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">…</text>
+<text x="270" y="300" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">c=C</text>
+<text x="80" y="445" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">C channel maps</text>
+<text x="80" y="477" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Each sheet is H × W.</text>
+<rect x="435" y="155" width="690" height="365" rx="18" fill="#ffffff" fill-opacity="1" stroke="#dce3ec" stroke-width="2"/>
+<text x="460" y="180" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">02   Kernel versions for ONE channel</text>
+<polygon points="475,278 490,263 582,263 567,278" fill="#e78b8a" fill-opacity="0.2" stroke="#ea9998" stroke-width="1"/>
+<polygon points="567,278 582,263 582,355 567,370" fill="#e78b8a" fill-opacity="0.3" stroke="#ea9998" stroke-width="1"/>
+<rect x="475" y="278" width="92" height="92" rx="0" fill="#e78b8a" fill-opacity="0.34" stroke="#ea9998" stroke-width="1"/>
+<polyline points="488.14285714285717,278 488.14285714285717,370" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="475,291.14285714285717 567,291.14285714285717" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="501.2857142857143,278 501.2857142857143,370" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="475,304.2857142857143 567,304.2857142857143" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="514.4285714285714,278 514.4285714285714,370" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="475,317.42857142857144 567,317.42857142857144" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="527.5714285714286,278 527.5714285714286,370" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="475,330.57142857142856 567,330.57142857142856" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="540.7142857142857,278 540.7142857142857,370" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="475,343.7142857142857 567,343.7142857142857" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="553.8571428571429,278 553.8571428571429,370" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="475,356.8571428571429 567,356.8571428571429" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<text x="523" y="393" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="23" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E1</text>
+<polygon points="630,278 645,263 737,263 722,278" fill="#a79ce3" fill-opacity="0.2" stroke="#b2a8e6" stroke-width="1"/>
+<polygon points="722,278 737,263 737,355 722,370" fill="#a79ce3" fill-opacity="0.3" stroke="#b2a8e6" stroke-width="1"/>
+<rect x="630" y="278" width="92" height="92" rx="0" fill="#a79ce3" fill-opacity="0.34" stroke="#b2a8e6" stroke-width="1"/>
+<polyline points="643.1428571428571,278 643.1428571428571,370" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="630,291.14285714285717 722,291.14285714285717" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="656.2857142857143,278 656.2857142857143,370" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="630,304.2857142857143 722,304.2857142857143" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="669.4285714285714,278 669.4285714285714,370" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="630,317.42857142857144 722,317.42857142857144" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="682.5714285714286,278 682.5714285714286,370" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="630,330.57142857142856 722,330.57142857142856" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="695.7142857142857,278 695.7142857142857,370" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="630,343.7142857142857 722,343.7142857142857" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="708.8571428571429,278 708.8571428571429,370" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<polyline points="630,356.8571428571429 722,356.8571428571429" fill="none" stroke="#dcd7f4" stroke-width="1"/>
+<text x="678" y="393" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="23" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E2</text>
+<polygon points="785,278 800,263 892,263 877,278" fill="#60b8a1" fill-opacity="0.2" stroke="#73c1ac" stroke-width="1"/>
+<polygon points="877,278 892,263 892,355 877,370" fill="#60b8a1" fill-opacity="0.3" stroke="#73c1ac" stroke-width="1"/>
+<rect x="785" y="278" width="92" height="92" rx="0" fill="#60b8a1" fill-opacity="0.34" stroke="#73c1ac" stroke-width="1"/>
+<polyline points="798.1428571428571,278 798.1428571428571,370" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="785,291.14285714285717 877,291.14285714285717" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="811.2857142857143,278 811.2857142857143,370" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="785,304.2857142857143 877,304.2857142857143" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="824.4285714285714,278 824.4285714285714,370" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="785,317.42857142857144 877,317.42857142857144" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="837.5714285714286,278 837.5714285714286,370" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="785,330.57142857142856 877,330.57142857142856" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="850.7142857142857,278 850.7142857142857,370" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="785,343.7142857142857 877,343.7142857142857" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="863.8571428571429,278 863.8571428571429,370" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="785,356.8571428571429 877,356.8571428571429" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<text x="833" y="393" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="23" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E3</text>
+<polygon points="940,278 955,263 1047,263 1032,278" fill="#e5b464" fill-opacity="0.2" stroke="#e8bd77" stroke-width="1"/>
+<polygon points="1032,278 1047,263 1047,355 1032,370" fill="#e5b464" fill-opacity="0.3" stroke="#e8bd77" stroke-width="1"/>
+<rect x="940" y="278" width="92" height="92" rx="0" fill="#e5b464" fill-opacity="0.34" stroke="#e8bd77" stroke-width="1"/>
+<polyline points="953.1428571428571,278 953.1428571428571,370" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="940,291.14285714285717 1032,291.14285714285717" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="966.2857142857143,278 966.2857142857143,370" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="940,304.2857142857143 1032,304.2857142857143" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="979.4285714285714,278 979.4285714285714,370" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="940,317.42857142857144 1032,317.42857142857144" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="992.5714285714286,278 992.5714285714286,370" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="940,330.57142857142856 1032,330.57142857142856" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="1005.7142857142857,278 1005.7142857142857,370" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="940,343.7142857142857 1032,343.7142857142857" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="1018.8571428571429,278 1018.8571428571429,370" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<polyline points="940,356.8571428571429 1032,356.8571428571429" fill="none" stroke="#f5e1c1" stroke-width="1"/>
+<text x="988" y="393" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="23" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E4</text>
+<text x="460" y="448" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">Four separate 7 × 7 kernels</text>
+<text x="460" y="480" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">The bank repeats independently for every channel.</text>
+<rect x="1147" y="155" width="270" height="365" rx="18" fill="#ffffff" fill-opacity="1" stroke="#dce3ec" stroke-width="2"/>
+<text x="1170" y="180" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">03   Router</text>
+<polygon points="1235,288 1247,276 1327,276 1315,288" fill="#efc866" fill-opacity="0.2" stroke="#f1cf78" stroke-width="1"/>
+<polygon points="1315,288 1327,276 1327,336 1315,348" fill="#efc866" fill-opacity="0.3" stroke="#f1cf78" stroke-width="1"/>
+<rect x="1235" y="288" width="80" height="60" rx="0" fill="#efc866" fill-opacity="0.34" stroke="#f1cf78" stroke-width="1"/>
+<text x="1275" y="304" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="30" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">R</text>
+<text x="1170" y="445" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="19" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">Reads all C channels</text>
+<text x="1170" y="478" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Selects k per channel.</text>
+<rect x="1439" y="155" width="313" height="365" rx="18" fill="#ffffff" fill-opacity="1" stroke="#dce3ec" stroke-width="2"/>
+<text x="1460" y="180" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">04   Operators</text>
+<circle cx="1500" cy="290" r="30" fill="#e4ebf4" stroke="#17283d" stroke-width="2"/>
+<text x="1500" y="268" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="36" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">Σ</text>
+<text x="1548" y="277" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Weighted sum</text>
+<circle cx="1500" cy="380" r="30" fill="#dcebf8" stroke="#17283d" stroke-width="2"/>
+<text x="1500" y="358" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="43" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">*</text>
+<text x="1548" y="365" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Convolution</text>
+<text x="1460" y="474" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Colour identifies a version.</text>
+<polyline points="65,555 147,555" fill="none" stroke="#17283d" stroke-width="3"/>
+<polygon points="147,555 134.0,549.0 134.0,561.0" fill="#17283d" fill-opacity="1" stroke="none" stroke-width="2"/>
+<text x="160" y="540" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Feature data</text>
+<polyline points="400,555 482,555" fill="none" stroke="#dca22b" stroke-width="3" stroke-dasharray="8 7"/>
+<polygon points="482,555 469.0,549.0 469.0,561.0" fill="#dca22b" fill-opacity="1" stroke="none" stroke-width="2"/>
+<text x="495" y="540" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Routing / mixing weights</text>
+<rect x="945" y="538" width="24" height="24" rx="0" fill="#ffffff" fill-opacity="1" stroke="#4e9a85" stroke-width="4"/>
+<text x="985" y="540" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Selected version</text>
+<rect x="1328" y="538" width="24" height="24" rx="0" fill="#edf0f5" fill-opacity="1" stroke="#c3cbd7" stroke-width="2"/>
+<text x="1370" y="540" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Inactive in this example</text>
+<rect x="48" y="602" width="1704" height="730" rx="18" fill="#ffffff" fill-opacity="1" stroke="#dce3ec" stroke-width="2"/>
+<text x="76" y="627" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="30" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">One channel, expanded</text>
+<text x="76" y="675" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Example: channel c selects E1 and E3. The other channels have their own banks and selections.</text>
+<polyline points="225,905 300,905 300,760 704,760" fill="none" stroke="#dca22b" stroke-width="3" stroke-dasharray="8 7"/>
+<polygon points="704,760 691.0,754.0 691.0,766.0" fill="#dca22b" fill-opacity="1" stroke="none" stroke-width="2"/>
+<text x="318" y="728" fill="#92681a" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Full C-channel input</text>
+<polygon points="718,740 730,728 822,728 810,740" fill="#efc866" fill-opacity="0.2" stroke="#f1cf78" stroke-width="1"/>
+<polygon points="810,740 822,728 822,785 810,797" fill="#efc866" fill-opacity="0.3" stroke="#f1cf78" stroke-width="1"/>
+<rect x="718" y="740" width="92" height="57" rx="0" fill="#efc866" fill-opacity="0.34" stroke="#f1cf78" stroke-width="1"/>
+<text x="764" y="751" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="29" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">R</text>
+<text x="855" y="743" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">Top-2</text>
+<text x="855" y="776" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="19" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">E1: 0.7   ·   E3: 0.3</text>
+<polyline points="764,810 764,842 530,842 530,880" fill="none" stroke="#dca22b" stroke-width="2" stroke-dasharray="8 7"/>
+<polygon points="530,880 536.0,867.0 524.0,867.0" fill="#dca22b" fill-opacity="1" stroke="none" stroke-width="2"/>
+<rect x="473" y="879" width="128" height="136" rx="12" fill="#f3faf7" fill-opacity="1" stroke="#4e9a85" stroke-width="3"/>
+<polygon points="485,900 498,887 582,887 569,900" fill="#e78b8a" fill-opacity="0.2" stroke="#ea9998" stroke-width="1"/>
+<polygon points="569,900 582,887 582,971 569,984" fill="#e78b8a" fill-opacity="0.3" stroke="#ea9998" stroke-width="1"/>
+<rect x="485" y="900" width="84" height="84" rx="0" fill="#e78b8a" fill-opacity="0.34" stroke="#ea9998" stroke-width="1"/>
+<polyline points="497.0,900 497.0,984" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="485,912.0 569,912.0" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="509.0,900 509.0,984" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="485,924.0 569,924.0" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="521.0,900 521.0,984" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="485,936.0 569,936.0" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="533.0,900 533.0,984" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="485,948.0 569,948.0" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="545.0,900 545.0,984" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="485,960.0 569,960.0" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="557.0,900 557.0,984" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<polyline points="485,972.0 569,972.0" fill="none" stroke="#f5d1d0" stroke-width="1"/>
+<text x="570" y="1030" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E1</text>
+<polyline points="764,810 764,842 730,842 730,880" fill="none" stroke="#d3d7df" stroke-width="2" stroke-dasharray="8 7"/>
+<polygon points="730,880 736.0,867.0 724.0,867.0" fill="#d3d7df" fill-opacity="1" stroke="none" stroke-width="2"/>
+<polygon points="685,900 698,887 782,887 769,900" fill="#e0e4eb" fill-opacity="0.2" stroke="#c1c8d3" stroke-width="1"/>
+<polygon points="769,900 782,887 782,971 769,984" fill="#e0e4eb" fill-opacity="0.3" stroke="#c1c8d3" stroke-width="1"/>
+<rect x="685" y="900" width="84" height="84" rx="0" fill="#e0e4eb" fill-opacity="0.34" stroke="#c1c8d3" stroke-width="1"/>
+<polyline points="697.0,900 697.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="685,912.0 769,912.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="709.0,900 709.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="685,924.0 769,924.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="721.0,900 721.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="685,936.0 769,936.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="733.0,900 733.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="685,948.0 769,948.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="745.0,900 745.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="685,960.0 769,960.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="757.0,900 757.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="685,972.0 769,972.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<text x="770" y="1030" fill="#8794a5" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E2</text>
+<polyline points="764,810 764,842 930,842 930,880" fill="none" stroke="#dca22b" stroke-width="2" stroke-dasharray="8 7"/>
+<polygon points="930,880 936.0,867.0 924.0,867.0" fill="#dca22b" fill-opacity="1" stroke="none" stroke-width="2"/>
+<rect x="873" y="879" width="128" height="136" rx="12" fill="#f3faf7" fill-opacity="1" stroke="#4e9a85" stroke-width="3"/>
+<polygon points="885,900 898,887 982,887 969,900" fill="#60b8a1" fill-opacity="0.2" stroke="#73c1ac" stroke-width="1"/>
+<polygon points="969,900 982,887 982,971 969,984" fill="#60b8a1" fill-opacity="0.3" stroke="#73c1ac" stroke-width="1"/>
+<rect x="885" y="900" width="84" height="84" rx="0" fill="#60b8a1" fill-opacity="0.34" stroke="#73c1ac" stroke-width="1"/>
+<polyline points="897.0,900 897.0,984" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="885,912.0 969,912.0" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="909.0,900 909.0,984" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="885,924.0 969,924.0" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="921.0,900 921.0,984" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="885,936.0 969,936.0" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="933.0,900 933.0,984" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="885,948.0 969,948.0" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="945.0,900 945.0,984" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="885,960.0 969,960.0" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="957.0,900 957.0,984" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<polyline points="885,972.0 969,972.0" fill="none" stroke="#bfe3d9" stroke-width="1"/>
+<text x="970" y="1030" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E3</text>
+<polyline points="764,810 764,842 1130,842 1130,880" fill="none" stroke="#d3d7df" stroke-width="2" stroke-dasharray="8 7"/>
+<polygon points="1130,880 1136.0,867.0 1124.0,867.0" fill="#d3d7df" fill-opacity="1" stroke="none" stroke-width="2"/>
+<polygon points="1085,900 1098,887 1182,887 1169,900" fill="#e0e4eb" fill-opacity="0.2" stroke="#c1c8d3" stroke-width="1"/>
+<polygon points="1169,900 1182,887 1182,971 1169,984" fill="#e0e4eb" fill-opacity="0.3" stroke="#c1c8d3" stroke-width="1"/>
+<rect x="1085" y="900" width="84" height="84" rx="0" fill="#e0e4eb" fill-opacity="0.34" stroke="#c1c8d3" stroke-width="1"/>
+<polyline points="1097.0,900 1097.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1085,912.0 1169,912.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1109.0,900 1109.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1085,924.0 1169,924.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1121.0,900 1121.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1085,936.0 1169,936.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1133.0,900 1133.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1085,948.0 1169,948.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1145.0,900 1145.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1085,960.0 1169,960.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1157.0,900 1157.0,984" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<polyline points="1085,972.0 1169,972.0" fill="none" stroke="#f3f4f7" stroke-width="1"/>
+<text x="1170" y="1030" fill="#8794a5" font-family="DejaVu Sans,sans-serif" font-size="22" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">E4</text>
+<polyline points="530,1015 530,1100 810,1140" fill="none" stroke="#e78b8a" stroke-width="4"/>
+<polygon points="810,1140 797.9791847198287,1132.221825406948 796.282128444981,1144.101219330882" fill="#e78b8a" fill-opacity="1" stroke="none" stroke-width="2"/>
+<text x="553" y="1080" fill="#a65051" font-family="DejaVu Sans,sans-serif" font-size="21" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">× 0.7</text>
+<polyline points="930,1015 930,1090 855,1138" fill="none" stroke="#60b8a1" stroke-width="4"/>
+<polygon points="855,1138 869.1838503871398,1136.0459303504651 862.7152060300594,1125.938673542527" fill="#60b8a1" fill-opacity="1" stroke="none" stroke-width="2"/>
+<text x="944" y="1075" fill="#32816d" font-family="DejaVu Sans,sans-serif" font-size="21" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">× 0.3</text>
+<circle cx="834" cy="1154" r="30" fill="#e4ebf4" stroke="#17283d" stroke-width="2"/>
+<text x="834" y="1132" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="35" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">Σ</text>
+<polyline points="866,1154 1002,1154" fill="none" stroke="#17283d" stroke-width="3"/>
+<polygon points="1002,1154 989.0,1148.0 989.0,1160.0" fill="#17283d" fill-opacity="1" stroke="none" stroke-width="2"/>
+<polygon points="1015,1112 1028,1099 1112,1099 1099,1112" fill="#7ea8b1" fill-opacity="0.2" stroke="#8db2ba" stroke-width="1"/>
+<polygon points="1099,1112 1112,1099 1112,1183 1099,1196" fill="#7ea8b1" fill-opacity="0.3" stroke="#8db2ba" stroke-width="1"/>
+<rect x="1015" y="1112" width="84" height="84" rx="0" fill="#7ea8b1" fill-opacity="0.34" stroke="#8db2ba" stroke-width="1"/>
+<polyline points="1027.0,1112 1027.0,1196" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1015,1124.0 1099,1124.0" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1039.0,1112 1039.0,1196" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1015,1136.0 1099,1136.0" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1051.0,1112 1051.0,1196" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1015,1148.0 1099,1148.0" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1063.0,1112 1063.0,1196" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1015,1160.0 1099,1160.0" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1075.0,1112 1075.0,1196" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1015,1172.0 1099,1172.0" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1087.0,1112 1087.0,1196" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<polyline points="1015,1184.0 1099,1184.0" fill="none" stroke="#cbdce0" stroke-width="1"/>
+<text x="1058" y="1221" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="19" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">Effective 7 × 7 kernel</text>
+<polyline points="1115,1154 1224,1154" fill="none" stroke="#17283d" stroke-width="3"/>
+<polygon points="1224,1154 1211.0,1148.0 1211.0,1160.0" fill="#17283d" fill-opacity="1" stroke="none" stroke-width="2"/>
+<circle cx="1260" cy="1154" r="34" fill="#dcebf8" stroke="#17283d" stroke-width="2"/>
+<text x="1260" y="1128" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="49" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">*</text>
+<text x="1260" y="1221" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="19" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">Convolve</text>
+<polyline points="1296,1154 1450,1154" fill="none" stroke="#17283d" stroke-width="3"/>
+<polygon points="1450,1154 1437.0,1148.0 1437.0,1160.0" fill="#17283d" fill-opacity="1" stroke="none" stroke-width="2"/>
+<polygon points="1465,1096 1474,1087 1564,1087 1555,1096" fill="#8fc4ed" fill-opacity="0.2" stroke="#9ccbef" stroke-width="1"/>
+<polygon points="1555,1096 1564,1087 1564,1203 1555,1212" fill="#8fc4ed" fill-opacity="0.3" stroke="#9ccbef" stroke-width="1"/>
+<rect x="1465" y="1096" width="90" height="116" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#9ccbef" stroke-width="1"/>
+<text x="1510" y="1134" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="28" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">y[c]</text>
+<text x="1510" y="1248" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">Output channel c</text>
+<polygon points="139,871 146,864 236,864 229,871" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="229,871 236,864 236,969 229,976" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="139" y="871" width="90" height="105" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="127,883 134,876 224,876 217,883" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="217,883 224,876 224,981 217,988" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="127" y="883" width="90" height="105" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="115,895 122,888 212,888 205,895" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="205,895 212,888 212,993 205,1000" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="115" y="895" width="90" height="105" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="103,907 110,900 200,900 193,907" fill="#8fc4ed" fill-opacity="0.2" stroke="#7a99b3" stroke-width="1"/>
+<polygon points="193,907 200,900 200,1005 193,1012" fill="#8fc4ed" fill-opacity="0.3" stroke="#7a99b3" stroke-width="1"/>
+<rect x="103" y="907" width="90" height="105" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#7a99b3" stroke-width="1"/>
+<text x="148.0" y="947.5" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="27" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">c₁</text>
+<text x="248" y="877" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="28" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">…</text>
+<text x="238" y="932" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">c=C</text>
+<text x="80" y="828" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">Input tensor X</text>
+<polyline points="195,1010 195,1095" fill="none" stroke="#17283d" stroke-width="3"/>
+<polygon points="195,1095 201.0,1082.0 189.0,1082.0" fill="#17283d" fill-opacity="1" stroke="none" stroke-width="2"/>
+<polygon points="150,1110 159,1101 249,1101 240,1110" fill="#8fc4ed" fill-opacity="0.2" stroke="#9ccbef" stroke-width="1"/>
+<polygon points="240,1110 249,1101 249,1206 240,1215" fill="#8fc4ed" fill-opacity="0.3" stroke="#9ccbef" stroke-width="1"/>
+<rect x="150" y="1110" width="90" height="105" rx="0" fill="#8fc4ed" fill-opacity="0.34" stroke="#9ccbef" stroke-width="1"/>
+<text x="195" y="1141" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="29" font-weight="700" text-anchor="middle" dominant-baseline="text-before-edge">x[c]</text>
+<text x="108" y="1248" fill="#17283d" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="700" text-anchor="start" dominant-baseline="text-before-edge">Input channel c</text>
+<polyline points="250,1170 315,1170 315,1284 1260,1284 1260,1190" fill="none" stroke="#17283d" stroke-width="4"/>
+<polygon points="1260,1190 1254.0,1203.0 1266.0,1203.0" fill="#17283d" fill-opacity="1" stroke="none" stroke-width="2"/>
+<text x="640" y="1297" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="17" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Channel feature map flows to the convolution</text>
+<text x="58" y="1352" fill="#5b6c81" font-family="DejaVu Sans,sans-serif" font-size="20" font-weight="400" text-anchor="start" dominant-baseline="text-before-edge">Proposed computation · selected kernels are mixed before convolution · the same selection is reused across H × W</text>
+</svg>

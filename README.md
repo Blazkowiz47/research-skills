@@ -32,6 +32,7 @@ Useful install variants:
 ./install.sh --skill supervise --target both
 ./install.sh --skill unslop --target both
 ./install.sh --skill maintain-course --target both
+./install.sh --skill technical-diagrams --target both
 ```
 
 Replaced skills are preserved under the agent's `skill-backups/`, outside skill
@@ -111,6 +112,21 @@ Example prompt:
 
 ```text
 Use $rubberduck to help me explore whether this metric gap points to a dataset issue or a training issue.
+```
+
+### `technical-diagrams`
+
+Draw neural-network architectures, combined system/data-flow views, method-call
+sequences, and control flow using translucent pastel shapes and light outlines.
+Use Explain mode for understanding and Present mode for papers or slides. The
+short entry point loads the shared style and only the relevant diagram reference;
+accepted examples include editable SVGs and PNG previews.
+
+The skill supports implicit selection for architecture, data-flow, and call-order
+requests, and system explanations where a diagram helps. Explicit invocation:
+
+```text
+Use $technical-diagrams to explain how these classes call each other.
 ```
 
 ### `supervise`
