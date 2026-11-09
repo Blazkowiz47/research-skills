@@ -326,6 +326,82 @@
         "Preserve bias placement across the nonlinearity when simplifying additive nodes.",
         "Render and inspect both figures together, checking legends, state styling, and all occurrences of each operator."
       ]
+    },
+    {
+      "id": "orchestrate-shared-contract",
+      "expected_primary_skill": "orchestrate",
+      "context": [
+        "Approved plan: add an optional timeout to a shared API and update two consumers without changing default behavior.",
+        "Both consumers depend on the shared API signature; initialized memory uses one journal with cooperative locking.",
+        "The active host supports the user-selected model and high effort."
+      ],
+      "request": "Use $orchestrate to execute this plan using the selected model with high effort for all workers and critics.",
+      "expected_outcomes": [
+        "Refine task dependencies and settle the shared contract before dispatching independent consumer edits.",
+        "Delegate substantive edits, pass narrow ownership and acceptance criteria, and preserve exact worker settings.",
+        "Critique every substantive task and verify default behavior and combined integration before accepting completion.",
+        "Coordinate journal writes without inventing per-agent journals or marking worker claims accepted before review."
+      ]
+    },
+    {
+      "id": "orchestrate-unavailable-effort",
+      "expected_primary_skill": "orchestrate",
+      "context": [
+        "Claude Code can choose a model, but this host exposes no way to apply or establish the requested worker effort.",
+        "The available named specialist is configured with a different model."
+      ],
+      "request": "Use $orchestrate for the approved plan, with my selected model and high effort for every worker and critic.",
+      "expected_outcomes": [
+        "Inspect native capabilities and report the exact configuration limitation before dispatch.",
+        "Do not silently substitute the named specialist, inherit another effort, or implement substantive changes solo.",
+        "Do not change global configuration or install an orchestration runtime to bypass the limitation."
+      ]
+    },
+    {
+      "id": "orchestrate-critique-correction",
+      "expected_primary_skill": "orchestrate",
+      "context": [
+        "The approved plan requires backward compatibility.",
+        "A worker claims completion and passing unit tests; the actual change removes an existing public parameter.",
+        "A critic flags the removal, but the worker disputes it and a second correction leaves it unchanged."
+      ],
+      "request": "Continue orchestrating the approved implementation with the same worker settings.",
+      "expected_outcomes": [
+        "Inspect the actual interface and accepted criterion rather than relying on passing tests or either agent opinion.",
+        "Require a scoped compatibility correction; do not weaken the criterion.",
+        "Investigate the repeated failure and change the assignment or reviewer instead of looping indefinitely.",
+        "Ask for a decision only if changing the approved design or outcome becomes necessary."
+      ]
+    },
+    {
+      "id": "orchestrate-resume-partial-work",
+      "expected_primary_skill": "orchestrate",
+      "context": [
+        "After compaction, the ledger says a worker is running but the host reports that agent no longer exists.",
+        "Its checkout contains partial implementation and unrelated user edits; model and effort were specified earlier.",
+        "The approved scope and acceptance criteria are still available."
+      ],
+      "request": "Continue $orchestrate from the checkpoint.",
+      "expected_outcomes": [
+        "Reconcile live agents and actual edits before reassigning ownership.",
+        "Preserve user edits, reuse the existing model/effort decisions, and give a replacement worker the partial-work context.",
+        "Re-verify affected work; do not mark completion from the stale ledger or repeat approval requests."
+      ]
+    },
+    {
+      "id": "orchestrate-significant-design-change",
+      "expected_primary_skill": "orchestrate",
+      "context": [
+        "Approved scope: local in-process caching without new infrastructure.",
+        "A worker proposes adding a remote cache service to resolve a consistency issue.",
+        "An independent documentation task remains ready; the project has no initialized memory."
+      ],
+      "request": "Keep going with $orchestrate and the previously selected worker model and effort.",
+      "expected_outcomes": [
+        "Keep the infrastructure change pending and explain the evidence and proposed decision to the user.",
+        "Continue unaffected ready work with narrow assignments.",
+        "Use handbacks and conversation checkpoints without initializing project memory."
+      ]
     }
   ]
 }

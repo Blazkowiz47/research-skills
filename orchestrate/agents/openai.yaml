@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate"
+  short_description: "Execute approved plans with workers and critique"
+  default_prompt: "Use $orchestrate to execute the approved plan with the worker model and effort I specify, coordinating narrow tasks, critique, verification, and project memory."

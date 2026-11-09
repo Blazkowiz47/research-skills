@@ -30,6 +30,7 @@ Useful install variants:
 ./install.sh --skill create-course --target codex
 ./install.sh --skill rubberduck --target both
 ./install.sh --skill supervise --target both
+./install.sh --skill orchestrate --target both
 ./install.sh --skill unslop --target both
 ./install.sh --skill maintain-course --target both
 ./install.sh --skill technical-diagrams --target both
@@ -150,6 +151,28 @@ The explicit form also works:
 ```text
 Use $supervise to check my current changes against the accepted plan.
 ```
+
+### `orchestrate`
+
+Execute an approved development plan with the current chat as orchestrator and
+native Codex or Claude subagents as narrow implementation workers. The orchestrator
+refines the breakdown, schedules independent work concurrently, critiques every
+substantive task itself or through a read-only critic, and verifies corrections
+and integration. Workers follow initialized project-memory conventions, with
+coordinated writes. No separate orchestration runtime is installed.
+
+Specify the worker model and effort when invoking; they apply to all workers and
+critics unless you explicitly override an assignment. Use a model and effort
+supported by the active host. For example, in Codex:
+
+```text
+Use $orchestrate to execute the approved plan. Use gpt-6.1-sol with high effort for all workers and critics.
+```
+
+In Claude Code, invoke `/orchestrate` with the approved plan and your selected
+Claude model and effort. The orchestrator can split, reorder, and refine tasks
+within scope; significant design or outcome changes return to you. It delegates
+substantive implementation and may make small integration fixes itself.
 
 ### `unslop`
 
